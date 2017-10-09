@@ -7,7 +7,7 @@ class PickProjectWizard(models.TransientModel):
     _description = "Pick the helpdesk project"
 
     state = "open"
-    #project_selection = fields.Selection(selection=[('a', 'A'), ('b', 'B'), ('c', 'C')])
+
     project_selection = fields.Selection(selection='get_helpdesk_projects', string='Helpdesk Projects')
 
     def get_helpdesk_projects(self):

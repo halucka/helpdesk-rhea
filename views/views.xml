@@ -23,9 +23,6 @@
                     <button class="oe_stat_button" icon="fa-money" type="object" name="budget_tree_view" context="{'helpdesk_ticket_id': active_id}">
                         <field name="budget_button_field" widget="statinfo"/>
                     </button>
-                    <!--<button class="oe_stat_button" icon="fa-tasks" type="object" name="helpdesk_ticket_show_associated_tasks">-->
-                        <!--<field string="Tasks" name="associated_task_count" widget="statinfo"/>-->
-                    <!--</button>-->
                 </button>
 
 

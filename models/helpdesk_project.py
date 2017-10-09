@@ -15,38 +15,19 @@ class Project(models.Model):
     @api.multi
     def budget_tree_view(self):
         print "budget_tree_view"
-        # self.ensure_one()
-        # domain = [
-        #     '|',
-        #     '&', ('res_model', '=', 'project.project'), ('res_id', 'in', self.ids),
-        #     '&', ('res_model', '=', 'project.task'), ('res_id', 'in', self.task_ids.ids)]
+        view_id = self.env.ref('helpdesk_rhea.helpdesk_budget_view_tree').id
+        context = self._context.copy()
         return {
             'name': _('Budgets'),
             'view_type': 'form',
-            'view_mode': 'form',
-            'res_model': 'pick.project.wizard',
-            'view_id': False,
+            'view_mode': 'tree',
+            'res_model': 'helpdesk.budget',
+            'view_id': view_id,
             'type': 'ir.actions.act_window',
-            'target': 'new',
-            'key2': 'client_action_multi',
+            'res_id': self.id,
+            'context': context,
         }
 
-    budget_button_field = fields.Integer(string='ATC')
+    budget_button_field = fields.Integer(string='Budgets')
 
 
-    # class ProductTemplate(models.Model):
-    #     _inherit = 'product.template'
-    #
-    #     is_contract = fields.Boolean('Is a contract')
-    #     contract_template_id = fields.Many2one(
-    #         comodel_name='account.analytic.contract',
-    #         string='Contract Template',
-    #     )
-    #
-    #     @api.onchange('is_contract')
-    #     def _change_is_contract(self):
-    #         """ Clear the relation to contract_template_id when downgrading
-    #         product from contract
-    #         """
-    #         if not self.is_contract:
-    #             self.contract_template_id = False

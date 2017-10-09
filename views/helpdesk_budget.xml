@@ -5,13 +5,7 @@
         id="helpdesk_budget_action"
         name="Helpdesk Budgets"
         res_model="helpdesk.budget" />
-
-        <menuitem
-        id="helpdesk_budget_menu"
-        name="Budgets"
-        action="helpdesk_budget_action"
-        parent=""
-        sequence="5" />
+        
 
         <record id="helpdesk_budget_view_form" model="ir.ui.view">
             <field name="name">Helpdesk Budget Form</field>
