@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <act_window
+        id="helpdesk_budget_action"
+        name="Helpdesk Budgets"
+        res_model="helpdesk.budget" />
+
+        <menuitem
+        id="helpdesk_budget_menu"
+        name="Budgets"
+        action="helpdesk_budget_action"
+        parent=""
+        sequence="5" />
+
+        <record id="helpdesk_budget_view_form" model="ir.ui.view">
+            <field name="name">Helpdesk Budget Form</field>
+            <field name="model">helpdesk.budget</field>
+            <field name="arch" type="xml">
+                <form>
+                  <group>
+                      <field name="sale_order_id"/>
+                      <field name="project_id"/>
+                      <field name="amount"/>
+                      <field name="amount_remaining"/>
+                  </group>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="helpdesk_budget_view_tree" model="ir.ui.view">
+            <field name="name">Helpdesk Budgets List</field>
+            <!--<field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>-->
+            <field name="model">helpdesk.budget</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="sale_order_id"/>
+                    <field name="project_id"/>
+                    <field name="amount"/>
+                    <field name="amount_remaining"/>
+                </tree>
+            </field>
+        </record>
+
+
+
+
+    </data>
+</odoo>

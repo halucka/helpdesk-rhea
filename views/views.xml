@@ -1,0 +1,72 @@
+<odoo>
+    <data>
+        <!--Inherit the sale order form view-->
+        <record id="view_sale_order_custom" model="ir.ui.view">
+            <field name="name">sale.order.custom.form.inherited</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_cancel']" position="after">
+                <button name="book_budget_on_project" states="draft,sent,sale" type="object" string="Book budget on project"/>
+            </xpath>
+            </field>
+        </record>
+
+        <!--Inherit the project project form view-->
+        <record id="view_project_project_custom" model="ir.ui.view">
+            <field name="name">project.project.form.inherited.rhea</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+
+                <button name="toggle_active" position="before">
+                    <button class="oe_stat_button" icon="fa-money" type="object" name="budget_tree_view" context="{'helpdesk_ticket_id': active_id}">
+                        <field name="budget_button_field" widget="statinfo"/>
+                    </button>
+                    <!--<button class="oe_stat_button" icon="fa-tasks" type="object" name="helpdesk_ticket_show_associated_tasks">-->
+                        <!--<field string="Tasks" name="associated_task_count" widget="statinfo"/>-->
+                    <!--</button>-->
+                </button>
+
+
+                <xpath expr="//div[@name='options_active']" position="inside">
+                    <div>
+                        <field name="is_servicedesk" class="oe_inline" />
+                        <label for="is_servicedesk"/>
+                    </div>
+                </xpath>
+
+            </field>
+        </record>
+
+        <!--<button class="oe_stat_button" type="action" name="..." context="..." icon="fa-money">-->
+                <!--<field string="Budgets" name="show_budgets" widget="statinfo"/> -->
+        <!--</button>-->
+
+         <record id="wizard_form_view" model="ir.ui.view">
+            <field name="name">wizard.form</field>
+            <field name="model">pick.project.wizard</field>
+             <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Choose project">
+
+                    <group string="Please pick the project:">
+
+                        <field name="project_selection" widget="selection"/>
+                        <!--<field name="session_id"/>-->
+                        <!--<field name="attendee_ids"/>-->
+                    </group>
+
+                    <footer>
+                        <button name="book_budget" string="Book budget" type="object" class="oe_highlight"/>
+                        <button name="cancel" string="Cancel" type="object" special="cancel" class="oe_link"/>
+                    </footer>
+
+                </form>
+            </field>
+        </record>
+
+
+
+    </data>
+</odoo>
