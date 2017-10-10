@@ -22,8 +22,8 @@ class HelpdeskBudget(models.Model):
         self.amount_remaining = self.amount_remaining - spent_budget
         return self
 
-    @api.one
+
+    @api.multi
     def _compute_amount(self):
-        # TODO !!! buggy - returns just zeroes
-        amount = self.sale_order_id.amount_untaxed
-        return amount
+        for budget in self:
+            budget.amount = budget.sale_order_id.amount_untaxed
