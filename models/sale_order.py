@@ -9,9 +9,6 @@ class SaleOrderInherited(models.Model):
     @api.multi
     def book_budget_on_project(self):
         # run a wizard to select which project should new budget go to
-        print self.name
-        print self.amount_untaxed
-        print self.partner_id
 
         return {
             'name': _('Pick Project Wizard'),
@@ -22,4 +19,5 @@ class SaleOrderInherited(models.Model):
             'type': 'ir.actions.act_window',
             'target': 'new',
             'key2': 'client_action_multi',
+            'context': {'sale_order_id': self.id},
         }
