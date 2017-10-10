@@ -19,7 +19,7 @@ class Project(models.Model):
         return {
             'name': _('Budgets'),
             'view_type': 'form',
-            'view_mode': 'tree',
+            'view_mode': 'tree,form',
             'res_model': 'helpdesk.budget',
             'type': 'ir.actions.act_window',
             'res_id': self.id,
