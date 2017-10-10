@@ -18,6 +18,7 @@ class HelpdeskBudget(models.Model):
         #self.amount_remaining = self.amount
         return self
 
+
     def update_amount(self, spent_budget):
         self.amount_remaining = self.amount_remaining - spent_budget
         return self
@@ -27,3 +28,11 @@ class HelpdeskBudget(models.Model):
     def _compute_amount(self):
         for budget in self:
             budget.amount = budget.sale_order_id.amount_untaxed
+
+    @api.multi
+    def _get_default_amount_remaining(self):
+        output = 0
+        for budget in self:
+            output = output+ budget.sale_order_id.amount_untaxed
+        print output
+        return output

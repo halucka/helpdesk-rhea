@@ -21,19 +21,15 @@ class PickProjectWizard(models.TransientModel):
 
     # action for a button
     def book_budget(self):
-        print self.project_selection
-        print self.state
-        # TODO assign budget to helpdesk project
-        self.state = "booked"
-        print self.state
+        # make a new helpdesk_budget object
+        so = self.env["sale.order"].search([('id','=', self._context['sale_order_id'])])
+        hbo = self.env["helpdesk.budget"]
+        hbo_to_write = {
+            "sale_order_id": self._context['sale_order_id'],
+            "project_id": self.project_selection,
+            "amount_remaining": so.amount_untaxed,
+        }
+
+        chbo = hbo.create(hbo_to_write)
 
 
-
-
-
-
-
-
-
-    # project_id = fields.Many2one('helpdesk.project',
-    #     string="Project")   #, required=True)
