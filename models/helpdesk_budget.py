@@ -29,10 +29,4 @@ class HelpdeskBudget(models.Model):
         for budget in self:
             budget.amount = budget.sale_order_id.amount_untaxed
 
-    @api.multi
-    def _get_default_amount_remaining(self):
-        output = 0
-        for budget in self:
-            output = output+ budget.sale_order_id.amount_untaxed
-        print output
-        return output
+    

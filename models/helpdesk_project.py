@@ -14,18 +14,17 @@ class Project(models.Model):
 
     @api.multi
     def budget_tree_view(self):
-        print "budget_tree_view"
-        view_id = self.env.ref('helpdesk_rhea.helpdesk_budget_view_tree').id
+
         context = self._context.copy()
         return {
             'name': _('Budgets'),
             'view_type': 'form',
             'view_mode': 'tree',
             'res_model': 'helpdesk.budget',
-            'view_id': view_id,
             'type': 'ir.actions.act_window',
             'res_id': self.id,
             'context': context,
+            'domain':[["project_id","=",self.id]],
         }
 
     budget_button_field = fields.Integer(string='Budgets')

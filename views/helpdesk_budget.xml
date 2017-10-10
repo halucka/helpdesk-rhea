@@ -21,7 +21,7 @@
                   <group>
                       <field name="sale_order_id"/>
                       <field name="sale_order_date"/>
-                      <!--<field name="project_id"/>-->
+                      <field name="project_id"/>
                       <field name="amount"/>
                       <field name="amount_remaining"/>
                   </group>
@@ -32,7 +32,6 @@
 
         <record id="helpdesk_budget_view_tree" model="ir.ui.view">
             <field name="name">Helpdesk Budgets List</field>
-            <!--<field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>-->
             <field name="model">helpdesk.budget</field>
             <field name="priority" eval="8" />
             <field name="arch" type="xml">
