@@ -27,6 +27,10 @@ class Project(models.Model):
             'domain':[["project_id","=",self.id]],
         }
 
-    budget_button_field = fields.Integer(string='Budgets')
+    budget_count = fields.Integer(string='Budgets', compute='_compute_budget_count')
 
+    @api.multi
+    def _compute_budget_count(self):
+        for project in self:
+            project.budget_count = len(project.budget_ids)
 

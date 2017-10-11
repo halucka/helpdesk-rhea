@@ -20,8 +20,8 @@
             <field name="arch" type="xml">
 
                 <button name="toggle_active" position="before">
-                    <button class="oe_stat_button" icon="fa-money" type="object" name="budget_tree_view" context="{'helpdesk_ticket_id': active_id}">
-                        <field name="budget_button_field" widget="statinfo"/>
+                    <button name="budget_tree_view" class="oe_stat_button" icon="fa-money" type="object"  context="{'helpdesk_ticket_id': active_id}">
+                        <field string="Budgets" name="budget_count" widget="statinfo"/>
                     </button>
                 </button>
 
