@@ -23,9 +23,10 @@ class PickBudgetWizard(models.TransientModel):
                 lst.append((record.id,record.sale_order_date))
             number = number + 1
         print lst
-        #
-        # print "looking up helpdesk timesheets..."
-        # ts_lst = []
-        # for record in self.env['project.analytic_account'].search([]):
-        #     ts_lst.append(record.id)
-        # print ts_lst
+
+        print "looking up helpdesk timesheets..."
+        ts_lst = []
+        for record in self.env['account.analytic.line'].search([]):
+            if record.account_id.name == "Data Import/Export Plugin":
+                ts_lst.append((record.id, record.name, record.account_id))
+        print ts_lst
