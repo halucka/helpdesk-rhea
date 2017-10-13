@@ -52,5 +52,5 @@ class Project(models.Model):
             'type': 'ir.actions.act_window',
             'target': 'new',
             'key2': 'client_action_multi',
-            'context': {},  #'sale_order_id': self.id},
+            'context': {'project_id': self.id,},  #'sale_order_id': self.id},
         }

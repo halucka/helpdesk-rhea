@@ -12,7 +12,7 @@ class PickBudgetWizard(models.TransientModel):
 
     # action for a button
     def lookup_budgets(self):
-        print "lookup_budgets in progress..."
+        print "looking up helpdesk budgets..."
         lst = []
         number = 1
         date_from_as_datetime = datetime.strptime(self.date_from, '%Y-%m-%d %H:%M:%S')
@@ -22,11 +22,14 @@ class PickBudgetWizard(models.TransientModel):
             if ((so_date_as_datetime > date_from_as_datetime) and (so_date_as_datetime < midnight_date_until)):
                 lst.append((record.id,record.sale_order_date))
             number = number + 1
+        print "Helpdesk Budgets within those dates are:"
         print lst
 
         print "looking up helpdesk timesheets..."
         ts_lst = []
+        current_project = self.env["project.project"].search([('id', '=', self._context['project_id'])])
         for record in self.env['account.analytic.line'].search([]):
-            if record.account_id.name == "Data Import/Export Plugin":
+           if record.account_id.name == current_project.name:   #not sure if project.name is correct
                 ts_lst.append((record.id, record.name, record.account_id))
+        print "Helpdesk Timesheets for this project are:"
         print ts_lst
