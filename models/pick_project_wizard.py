@@ -6,11 +6,6 @@ class PickProjectWizard(models.TransientModel):
     _name = 'pick.project.wizard'
     _description = "Pick the helpdesk project"
 
-<<<<<<< HEAD
-=======
-    state = "open"
-
->>>>>>> master
     project_selection = fields.Selection(selection='get_helpdesk_projects', string='Helpdesk Projects')
 
     def get_helpdesk_projects(self):
@@ -34,5 +29,3 @@ class PickProjectWizard(models.TransientModel):
         }
 
         chbo = hbo.create(hbo_to_write)
-
-

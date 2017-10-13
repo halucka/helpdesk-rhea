@@ -24,7 +24,6 @@ class Project(models.Model):
         return {
             'name': _('Budgets'),
             'view_type': 'form',
-<<<<<<< HEAD
             'view_mode': 'tree,form',
             'res_model': 'helpdesk.budget',
             'type': 'ir.actions.act_window',
@@ -55,17 +54,3 @@ class Project(models.Model):
             'key2': 'client_action_multi',
             'context': {},  #'sale_order_id': self.id},
         }
-
-=======
-            'view_mode': 'tree',
-            'res_model': 'helpdesk.budget',
-            'type': 'ir.actions.act_window',
-            'res_id': self.id,
-            'context': context,
-            'domain':[["project_id","=",self.id]],
-        }
-
-    budget_button_field = fields.Integer(string='Budgets')
-
-
->>>>>>> master
