@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from odoo import fields, models, api, _
+""" Class BudgetDebit stores the Budget Debits made by using Helpdesk """
 
-""" Class BudgetDebit stores the Budget Debits made by using Helpdesk"""
+from odoo import fields, models, api, _
 
 class BudgetDebit(models.Model):
     _name = "budget.debit"

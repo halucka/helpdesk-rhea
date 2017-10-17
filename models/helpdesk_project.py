@@ -9,7 +9,7 @@ class Project(models.Model):
     _inherit = 'project.project'
     is_servicedesk = fields.Boolean('Is a servicedesk')
     ticketprice = fields.Float('Helpdesk Ticket Price', default="25.0")
-    tickettime = fields.Float('Helpdesk Ticket Time Unit in Minutes', default="15.0")
+    tickettime = fields.Float('Helpdesk Ticket Time Unit in Hours', default="0.25")
     budget_ids = fields.One2many(
                'helpdesk.budget', 'project_id',
                string='Budget ids'
@@ -52,5 +52,5 @@ class Project(models.Model):
             'type': 'ir.actions.act_window',
             'target': 'new',
             'key2': 'client_action_multi',
-            'context': {'project_id': self.id,},  #'sale_order_id': self.id},
+            'context': {'project_id': self.id,},
         }
