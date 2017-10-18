@@ -10,18 +10,18 @@ class HelpdeskBudget(models.Model):
     amount = fields.Float('Total Amount', compute='_compute_amount')
     amount_remaining = fields.Float('Amount Remaining')
 
-    def set_budget(self, sale_order_id, project_id):
-        self.sale_order_id = sale_order_id
-        self.sale_order_date = self.sale_order_id.date_order
-        self.project_id = project_id
-        #self.amount = self.sale_order_id.amount_untaxed
-        #self.amount_remaining = self.amount
-        return self
-
-
-    def update_amount(self, spent_budget):
-        self.amount_remaining = self.amount_remaining - spent_budget
-        return self
+    # def set_budget(self, sale_order_id, project_id):
+    #     self.sale_order_id = sale_order_id
+    #     self.sale_order_date = self.sale_order_id.date_order
+    #     self.project_id = project_id
+    #     #self.amount = self.sale_order_id.amount_untaxed
+    #     #self.amount_remaining = self.amount
+    #     return self
+    #
+    #
+    # def update_amount(self, spent_budget):
+    #     self.amount_remaining = self.amount_remaining - spent_budget
+    #     return self
 
 
     @api.multi
