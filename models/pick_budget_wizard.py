@@ -3,6 +3,7 @@
 from odoo import models, fields, api, _
 from datetime import datetime, timedelta
 from operator import itemgetter
+from math import ceil
 
 
 class PickBudgetWizard(models.TransientModel):
@@ -58,7 +59,21 @@ class PickBudgetWizard(models.TransientModel):
         print "timesheets_per_date"
         print timesheets_per_date
 
-        return ts_lst
+        consolidated_timesheets = []
+        for date in timesheets_per_date.keys():
+            orig_timesheets = timesheets_per_date[date]
+            totaltime = 0
+            for id in orig_timesheets:
+                totaltime += self.env['account.analytic.line'].search([('id', '=', id)]).unit_amount
+            print "totaltime"
+            print totaltime
+            cost = ceil(totaltime/current_project.tickettime)*current_project.ticketprice
+            consolidated_timesheets.append((date, totaltime, cost, orig_timesheets)) #appended a tuple
+
+        print "consolidated_timesheets"
+        print consolidated_timesheets
+
+        return consolidated_timesheets
 
     @api.multi
     def pick_budget(self, date_from_as_datetime, midnight_date_until,current_project):
@@ -88,7 +103,8 @@ class PickBudgetWizard(models.TransientModel):
         open_budget = self.env["helpdesk.budget"].search([('id', '=', open_budget_id)])
 
         for timesheet_tup in consolidated_timesheets:
-            timesheet = self.env["account.analytic.line"].search([('id', '=', timesheet_tup[0])])
+            timesheet = self.env["account.analytic.line"].search([('id', '=', timesheet_tup[3][0])])
+            #TODO change to new format of consolidated_timesheets ^^^
 
             # check if the timesheet still fits in the budget
             amount_to_transfer = None
