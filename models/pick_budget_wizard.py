@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta
+from operator import itemgetter
+
 
 class PickBudgetWizard(models.TransientModel):
     _name = 'pick.budget.wizard'
@@ -30,13 +32,31 @@ class PickBudgetWizard(models.TransientModel):
         # step 2: sum the timesheets on the same day (i.e. make a copy of the timesheet list where each day would be unique)
         # step 3: round the time *up* to the multiple of project.project tickettime
         # step 4: calculate the price for each ticket and the total price
-        # return total price
 
         ts_lst = []
 
         for record in self.env['account.analytic.line'].search([]):
             if record.account_id.name == current_project.name:
-                ts_lst.append(record.id) #(record.id, record.name)
+                ts_lst.append((record.id, record.date)) #(record.id, record.name)
+
+        ts_lst.sort(key=itemgetter(1))  # sort by date
+        print "Timesheet list ordered by date"
+        print ts_lst
+
+
+        def insertIntoDataStruct(id, date, aDict):
+            if not date in aDict:
+                aDict[date] = [id]
+            else:
+                aDict[date].append(id)
+
+        timesheets_per_date = {}
+
+        for x in ts_lst:
+            insertIntoDataStruct(x[0], x[1], timesheets_per_date)
+
+        print "timesheets_per_date"
+        print timesheets_per_date
 
         return ts_lst
 
@@ -54,8 +74,11 @@ class PickBudgetWizard(models.TransientModel):
         # TODO
         # try to pick first budget with amount_remaining > 0 and amount not equal to amount_remaining -> i.e open budget
         # if None, then the budget with amount remaining > 0 and oldest by date
+        # check if there is already a Budget with amount remaining < 0
         # if still None make new budget (to be manually made into new Sales Order)
 
+
+        print budget_list
         return budget_list[0]
 
     @api.multi
@@ -64,8 +87,8 @@ class PickBudgetWizard(models.TransientModel):
         open_budget_id = self.pick_budget(date_from_as_datetime, midnight_date_until,current_project)
         open_budget = self.env["helpdesk.budget"].search([('id', '=', open_budget_id)])
 
-        for timesheet_id in consolidated_timesheets:
-            timesheet = self.env["account.analytic.line"].search([('id', '=', timesheet_id)])
+        for timesheet_tup in consolidated_timesheets:
+            timesheet = self.env["account.analytic.line"].search([('id', '=', timesheet_tup[0])])
 
             # check if the timesheet still fits in the budget
             amount_to_transfer = None
@@ -96,7 +119,7 @@ class PickBudgetWizard(models.TransientModel):
 
                 consolidated_timesheets = self.consolidate_timesheets(current_project)
                 self.book_timesheets_on_budget(date_from_as_datetime, midnight_date_until, current_project,
-                                          consolidated_timesheets)
+                                               consolidated_timesheets)
         # book the timesheets on the open budget
         # keep track of bookings on budget_debit objects
         # if the open_budget is spent request new one via pick_budget(budget_list)
