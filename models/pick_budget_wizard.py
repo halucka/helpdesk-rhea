@@ -13,7 +13,7 @@ class PickBudgetWizard(models.TransientModel):
     date_from = fields.Datetime('Date From')
     date_until = fields.Datetime('Date Until')
 
-   # action for a button
+    # action for a button
     @api.multi
     def reconciliate_budgets_and_timesheets(self):
 
@@ -22,11 +22,11 @@ class PickBudgetWizard(models.TransientModel):
         date_from_as_datetime = datetime.strptime(self.date_from, '%Y-%m-%d %H:%M:%S')
         midnight_date_until = datetime.strptime(self.date_until, '%Y-%m-%d %H:%M:%S') + timedelta(days=1, microseconds=-1)
 
-        consolidated_timesheets = self.consolidate_timesheets(current_project)
-        self.book_timesheets_on_budget(date_from_as_datetime, midnight_date_until,current_project,consolidated_timesheets)
+
+        self.book_timesheets_on_budget(date_from_as_datetime, midnight_date_until,current_project)
 
     @api.multi
-    def consolidate_timesheets(self,current_project):
+    def consolidate_timesheets(self, current_project):
 
         # step 1: find timesheets for the current project and order them according to date
         ts_lst = []
@@ -64,9 +64,6 @@ class PickBudgetWizard(models.TransientModel):
             cost = ceil(totaltime/current_project.tickettime)*current_project.ticketprice
             consolidated_timesheets.append((date, cost, orig_timesheets))
 
-        print "consolidated_timesheets"
-        print consolidated_timesheets
-
         return consolidated_timesheets
 
     @api.multi
@@ -87,18 +84,21 @@ class PickBudgetWizard(models.TransientModel):
         # if still None make new budget (to be manually made into new Sales Order)
 
 
-        print budget_list
-        return budget_list[0]
+        if len(budget_list) == 0:
+            return False
+        else:
+            return budget_list[0] # TODO
 
     @api.multi
-    def book_timesheets_on_budget(self, date_from_as_datetime, midnight_date_until,current_project,
-                                  consolidated_timesheets):
+    def book_timesheets_on_budget(self, date_from_as_datetime, midnight_date_until,current_project):
         """
         This function should:
         - book the timesheets on the open budget
         - keep track of bookings on budget_debit objects
         - if the open_budget is spent request new one via pick_budget(budget_list)
         """
+        consolidated_timesheets = self.consolidate_timesheets(current_project)
+
         open_budget_id = self.pick_budget(date_from_as_datetime, midnight_date_until,current_project)
         open_budget = self.env["helpdesk.budget"].search([('id', '=', open_budget_id)])
 
@@ -106,42 +106,47 @@ class PickBudgetWizard(models.TransientModel):
             timesheet_date = timesheet_tup[0]
             timesheet_cost = timesheet_tup[1]
             timesheet_ids = timesheet_tup[2]
-            #timesheet = self.env["account.analytic.line"].search([('id', '=', timesheet_tup[2][0])])
+            # timesheet = self.env["account.analytic.line"].search([('id', '=', timesheet_tup[2][0])])
 
             # timesheet_tup is (date, cost, orig_timesheets)
             #  which looks like this ('2017-10-12', 1200.0, [9, 8, 7])
             # TODO change to new format of consolidated_timesheets ^^^
             # TODO !!!! at the moment takes only first of the timesheets from the tuple into account
 
-            # check if the timesheet still fits in the budget
+            # check if the consolidated timesheet still fits in the budget
             amount_to_transfer = None
             new_amount_remaining = open_budget.amount_remaining - timesheet_cost
             if new_amount_remaining < 0.0:
                 amount_to_transfer = -new_amount_remaining
                 new_amount_remaining = 0
 
+            print "Going to write to budget with id: ", open_budget_id
             # make a new budget_debit object
             bd = self.env["budget.debit"]
             bd_to_write = {"budget_id" : open_budget_id,
                            "project_id": current_project.id, #to check if with or without id
-                           #"timesheet_ids": timesheet_ids, #TODO field must accept several values
                            "amount": timesheet_cost,
                            }
 
             new_bd = bd.create(bd_to_write)
-            #timesheet.amount_due = 0 #TODO
+
+            for id in timesheet_ids:
+                timesheet = self.env["account.analytic.line"].search([('id', '=', id)])
+                timesheet.write({"budget_debit_id": new_bd.id}) #maybe .id
+
+
+            # timesheet.amount_due = 0 #TODO
             open_budget.write({"amount_remaining" : new_amount_remaining})
 
             if amount_to_transfer is not None:
                 # TODO fix - goes to infinite cycle, but probably only because pick_budget not yet implemented
-                new_name = "Back-order of " + timesheet.name
-                new_timesheet = timesheet.copy(default={
-                                    'name': new_name,
+                new_name = "Back-order of " + str(timesheet_ids)
+                nt = self.env["account.analytic.line"]
+                timesheet_to_write = {'name': new_name,
                                     'amount': -amount_to_transfer,
-                                    'amount_due': amount_to_transfer,})
+                                    'amount_due': amount_to_transfer,}
+                new_back_order_timesheet = nt.create(timesheet_to_write)
 
-                consolidated_timesheets = self.consolidate_timesheets(current_project)
-                self.book_timesheets_on_budget(date_from_as_datetime, midnight_date_until, current_project,
-                                               consolidated_timesheets)
+                self.book_timesheets_on_budget(date_from_as_datetime, midnight_date_until, current_project)
 
 

@@ -9,6 +9,6 @@ class BudgetDebit(models.Model):
     budget_id = fields.Many2one('helpdesk.budget', string='Budget')
     project_id = fields.Many2one('project.project', string='Project')
 
-    timesheet_id = fields.Many2one('account.analytic.line', string='Timesheet Line')
+    timesheet_ids = fields.One2many('account.analytic.line','budget_debit_id', string='Timesheet Line')
     amount = fields.Float('Amount')
 
