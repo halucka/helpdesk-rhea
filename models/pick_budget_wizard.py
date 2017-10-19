@@ -75,19 +75,57 @@ class PickBudgetWizard(models.TransientModel):
             so_date_as_datetime = datetime.strptime(record.sale_order_date, '%Y-%m-%d %H:%M:%S')
             date_correct = (so_date_as_datetime > date_from_as_datetime) and (so_date_as_datetime < midnight_date_until)
             if date_correct and (record.project_id == current_project):
-                budget_list.append(record.id)  # (record.id,record.sale_order_date)
+                budget_list.append((record.id, record.amount_remaining, record.sale_order_date))
+
+        # remove budgets that are spent, but not those that
+        # still have budget on them or are negative (to be made into Sale Order manually)
+        budget_list = [item for item in budget_list if item[1] <> 0]
+
+        budget_list.sort(key=itemgetter(1))  # sort by amount_remaining
+
+        print "budget_list before"
+        print budget_list
+
+        any_budget = False
+        any_positive = False
+        any_negative = False
+        total_remaining_budget = 0
+
+        if len(budget_list) != 0:
+            any_budget = True
+
+        if not any_budget:
+            print "There is no existing Budget within those dates..."
+            print "Either choose different dates or make new budget"
+            return False
+
+        if any_budget:
+            for item in budget_list:
+                total_remaining_budget += item[1]
+                if item[1] > 0:
+                    any_positive = True
+                if item[1] < 0:
+                    any_negative = True
+
+        print "The total remaining amount on all budgets within those dates is: ", total_remaining_budget
+
+        if any_positive and any_negative:
+            print "There are both positive and negative Budgets..."
+            return False
+
+        if any_positive and not any_negative: # This is the normal scenario
+            budget_list.sort(key=itemgetter(2))  # sort by date, then return the oldest
+            return budget_list[0][0]
+
+        if any_negative and not any_positive:
+            print "Warning, we are already running credit, continue anyway?"
+            return False
 
         # TODO
         # try to pick first budget with amount_remaining > 0 and amount not equal to amount_remaining -> i.e open budget
         # if None, then the budget with amount remaining > 0 and oldest by date
         # check if there is already a Budget with amount remaining < 0
         # if still None make new budget (to be manually made into new Sales Order)
-
-
-        if len(budget_list) == 0:
-            return False
-        else:
-            return budget_list[0] # TODO
 
     @api.multi
     def book_timesheets_on_budget(self, date_from_as_datetime, midnight_date_until,current_project):
@@ -99,6 +137,10 @@ class PickBudgetWizard(models.TransientModel):
         """
         consolidated_timesheets = self.consolidate_timesheets(current_project)
 
+        print "consolidated_timesheets"
+        print consolidated_timesheets
+
+
         open_budget_id = self.pick_budget(date_from_as_datetime, midnight_date_until,current_project)
         open_budget = self.env["helpdesk.budget"].search([('id', '=', open_budget_id)])
 
@@ -106,6 +148,10 @@ class PickBudgetWizard(models.TransientModel):
             timesheet_date = timesheet_tup[0]
             timesheet_cost = timesheet_tup[1]
             timesheet_ids = timesheet_tup[2]
+
+            print "timesheet_cost"
+            print timesheet_cost
+
             # timesheet = self.env["account.analytic.line"].search([('id', '=', timesheet_tup[2][0])])
 
             # timesheet_tup is (date, cost, orig_timesheets)
@@ -124,7 +170,7 @@ class PickBudgetWizard(models.TransientModel):
             # make a new budget_debit object
             bd = self.env["budget.debit"]
             bd_to_write = {"budget_id" : open_budget_id,
-                           "project_id": current_project.id, #to check if with or without id
+                           "project_id": current_project.id,
                            "amount": timesheet_cost,
                            }
 
@@ -132,20 +178,30 @@ class PickBudgetWizard(models.TransientModel):
 
             for id in timesheet_ids:
                 timesheet = self.env["account.analytic.line"].search([('id', '=', id)])
-                timesheet.write({"budget_debit_id": new_bd.id}) #maybe .id
+                timesheet.write({"budget_debit_id": new_bd.id})
 
 
-            # timesheet.amount_due = 0 #TODO
             open_budget.write({"amount_remaining" : new_amount_remaining})
 
             if amount_to_transfer is not None:
+                print "Warning: we need to tranfer to another Budget, this one is used up!"
                 # TODO fix - goes to infinite cycle, but probably only because pick_budget not yet implemented
                 new_name = "Back-order of " + str(timesheet_ids)
+
+                back_order_ticket_amount =  amount_to_transfer/current_project.ticketprice*current_project.tickettime
+                print "back_order_ticket_amount"
+                print back_order_ticket_amount
                 nt = self.env["account.analytic.line"]
                 timesheet_to_write = {'name': new_name,
                                     'amount': -amount_to_transfer,
-                                    'amount_due': amount_to_transfer,}
+                                    'amount_due': amount_to_transfer,
+                                      'unit_amount': back_order_ticket_amount,
+                                      'project_id': current_project.id}
                 new_back_order_timesheet = nt.create(timesheet_to_write)
+
+                for id in timesheet_ids:
+                    timesheet = self.env["account.analytic.line"].search([('id', '=', id)])
+                    timesheet.write({"amount_due": 0})
 
                 self.book_timesheets_on_budget(date_from_as_datetime, midnight_date_until, current_project)
 

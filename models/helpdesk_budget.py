@@ -11,7 +11,6 @@ class HelpdeskBudget(models.Model):
     amount_remaining = fields.Float('Amount Remaining')
 
 
-
     @api.multi
     def _compute_amount(self):
         for budget in self:
