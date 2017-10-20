@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 from datetime import datetime, timedelta
 from operator import itemgetter
 from math import ceil
@@ -31,8 +32,7 @@ class PickBudgetWizard(models.TransientModel):
         # step 1: find timesheets for the current project and order them according to date
         ts_lst = []
 
-        # TODO limit to only open unpaid timesheets
-        for record in self.env['account.analytic.line'].search([]):
+        for record in self.env['account.analytic.line'].search([('amount_due', '>', 0)]): # &gt;
             if record.account_id.name == current_project.name:
                 ts_lst.append((record.id, record.date)) #(record.id, record.name)
 
@@ -95,8 +95,7 @@ class PickBudgetWizard(models.TransientModel):
             any_budget = True
 
         if not any_budget:
-            print "There is no existing Budget within those dates..."
-            print "Either choose different dates or make new budget"
+            raise UserError(_("There is no existing Budget within those dates. Please either choose different dates or make new Budget from a Sales Order."))
             return False
 
         if any_budget:
@@ -118,7 +117,7 @@ class PickBudgetWizard(models.TransientModel):
             return budget_list[0][0]
 
         if any_negative and not any_positive:
-            print "Warning, we are already running credit, continue anyway?"
+            raise UserError(_("We are already running credit (remaining Budget < 0)"))
             return False
 
         # TODO
@@ -144,20 +143,18 @@ class PickBudgetWizard(models.TransientModel):
         open_budget_id = self.pick_budget(date_from_as_datetime, midnight_date_until,current_project)
         open_budget = self.env["helpdesk.budget"].search([('id', '=', open_budget_id)])
 
-        for timesheet_tup in consolidated_timesheets:
+        while len(consolidated_timesheets) > 0:
+
+            timesheet_tup = consolidated_timesheets[0]
+            # timesheet_tup is (date, cost, orig_timesheets)
+            #  which looks like this ('2017-10-12', 1200.0, [9, 8, 7])
+
             timesheet_date = timesheet_tup[0]
             timesheet_cost = timesheet_tup[1]
             timesheet_ids = timesheet_tup[2]
 
             print "timesheet_cost"
             print timesheet_cost
-
-            # timesheet = self.env["account.analytic.line"].search([('id', '=', timesheet_tup[2][0])])
-
-            # timesheet_tup is (date, cost, orig_timesheets)
-            #  which looks like this ('2017-10-12', 1200.0, [9, 8, 7])
-            # TODO change to new format of consolidated_timesheets ^^^
-            # TODO !!!! at the moment takes only first of the timesheets from the tuple into account
 
             # check if the consolidated timesheet still fits in the budget
             amount_to_transfer = None
@@ -178,31 +175,33 @@ class PickBudgetWizard(models.TransientModel):
 
             for id in timesheet_ids:
                 timesheet = self.env["account.analytic.line"].search([('id', '=', id)])
-                timesheet.write({"budget_debit_id": new_bd.id})
+                timesheet.write({"budget_debit_id": new_bd.id, "amount_due": 0})
 
-
-            open_budget.write({"amount_remaining" : new_amount_remaining})
+            open_budget.write({"amount_remaining" : new_amount_remaining}) # This does not seem to work correctly
 
             if amount_to_transfer is not None:
                 print "Warning: we need to tranfer to another Budget, this one is used up!"
-                # TODO fix - goes to infinite cycle, but probably only because pick_budget not yet implemented
-                new_name = "Back-order of " + str(timesheet_ids)
 
-                back_order_ticket_amount =  amount_to_transfer/current_project.ticketprice*current_project.tickettime
-                print "back_order_ticket_amount"
-                print back_order_ticket_amount
-                nt = self.env["account.analytic.line"]
-                timesheet_to_write = {'name': new_name,
-                                    'amount': -amount_to_transfer,
-                                    'amount_due': amount_to_transfer,
-                                      'unit_amount': back_order_ticket_amount,
-                                      'project_id': current_project.id}
-                new_back_order_timesheet = nt.create(timesheet_to_write)
+                consolidated_timesheets[0] = (timesheet_date, amount_to_transfer, timesheet_ids) # make sure this actually modifies the cons timesheets
+                open_budget_id = self.pick_budget(date_from_as_datetime, midnight_date_until, current_project)
 
-                for id in timesheet_ids:
-                    timesheet = self.env["account.analytic.line"].search([('id', '=', id)])
-                    timesheet.write({"amount_due": 0})
+                if open_budget_id is False:
+                    new_name = "Back-order of " + str(timesheet_ids)
+                    back_order_ticket_amount =  amount_to_transfer/current_project.ticketprice*current_project.tickettime
+                    print "back_order_ticket_amount"
+                    print back_order_ticket_amount
+                    nt = self.env["account.analytic.line"]
+                    timesheet_to_write = {'name': new_name,
+                                          'amount': -amount_to_transfer,
+                                          'amount_due': amount_to_transfer,
+                                          'unit_amount': back_order_ticket_amount,
+                                          'project_id': current_project.id,
+                                          'date':timesheet_date,}
+                    new_back_order_timesheet = nt.create(timesheet_to_write)
 
-                self.book_timesheets_on_budget(date_from_as_datetime, midnight_date_until, current_project)
+                else:
+                    open_budget = self.env["helpdesk.budget"].search([('id', '=', open_budget_id)])
 
+            else:
+                del consolidated_timesheets[0]
 
