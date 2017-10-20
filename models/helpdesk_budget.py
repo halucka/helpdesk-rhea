@@ -12,6 +12,7 @@ class HelpdeskBudget(models.Model):
 
 
     @api.multi
+    @api.depends('sale_order_id')
     def _compute_amount(self):
         for budget in self:
             budget.amount = budget.sale_order_id.amount_untaxed

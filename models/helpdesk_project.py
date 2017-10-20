@@ -14,7 +14,6 @@ class Project(models.Model):
                'helpdesk.budget', 'project_id',
                string='Budget ids'
            )
-
     budget_count = fields.Integer(string='Budgets', compute='_compute_budget_count')
 
     @api.multi
@@ -35,6 +34,7 @@ class Project(models.Model):
 
 
     @api.multi
+    @api.depends('budget_ids')
     def _compute_budget_count(self):
         for project in self:
             project.budget_count = len(project.budget_ids)

@@ -108,13 +108,15 @@ class PickBudgetWizard(models.TransientModel):
 
         print "The total remaining amount on all budgets within those dates is: ", total_remaining_budget
 
+        if any_positive and not any_negative: # This is the normal scenario
+            budget_list.sort(key=itemgetter(2))  # sort by date, then return the oldest
+            return budget_list[0][0]
+
         if any_positive and any_negative:
             print "There are both positive and negative Budgets..."
             return False
 
-        if any_positive and not any_negative: # This is the normal scenario
-            budget_list.sort(key=itemgetter(2))  # sort by date, then return the oldest
-            return budget_list[0][0]
+
 
         if any_negative and not any_positive:
             raise UserError(_("We are already running credit (remaining Budget < 0)"))
