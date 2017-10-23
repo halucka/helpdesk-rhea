@@ -9,7 +9,7 @@ from math import ceil
 
 class PickBudgetWizard(models.TransientModel):
     _name = 'pick.budget.wizard'
-    _description = "Please select the dates for Budgets:"
+    _description = "Please select the dates for Timesheets:"
 
     date_from = fields.Datetime('Date From')
     date_until = fields.Datetime('Date Until')
@@ -27,13 +27,15 @@ class PickBudgetWizard(models.TransientModel):
         self.book_timesheets_on_budget(date_from_as_datetime, midnight_date_until,current_project)
 
     @api.multi
-    def consolidate_timesheets(self, current_project):
+    def consolidate_timesheets(self, date_from_as_datetime, midnight_date_until, current_project):
 
         # step 1: find timesheets for the current project and order them according to date
         ts_lst = []
 
-        for record in self.env['account.analytic.line'].search([('amount_due', '>', 0)]): # &gt;
-            if record.account_id.name == current_project.name:
+        for record in self.env['account.analytic.line'].search([]):
+            date_as_datetime = datetime.strptime(record.date, '%Y-%m-%d')  # for Datetime '%Y-%m-%d %H:%M:%S'
+            date_correct = (date_as_datetime > date_from_as_datetime) and (date_as_datetime < midnight_date_until)
+            if date_correct and (record.account_id.name == current_project.name):
                 ts_lst.append((record.id, record.date)) #(record.id, record.name)
 
         ts_lst.sort(key=itemgetter(1))  # sort by date
@@ -67,14 +69,12 @@ class PickBudgetWizard(models.TransientModel):
         return consolidated_timesheets
 
     @api.multi
-    def pick_budget(self, date_from_as_datetime, midnight_date_until,current_project):
+    def pick_budget(self, current_project):
 
         budget_list = []
 
         for record in self.env['helpdesk.budget'].search([]):
-            so_date_as_datetime = datetime.strptime(record.sale_order_date, '%Y-%m-%d %H:%M:%S')
-            date_correct = (so_date_as_datetime > date_from_as_datetime) and (so_date_as_datetime < midnight_date_until)
-            if date_correct and (record.project_id == current_project):
+            if record.project_id == current_project:
                 budget_list.append((record.id, record.amount_remaining, record.sale_order_date))
 
         # remove budgets that are spent, but not those that
@@ -95,7 +95,7 @@ class PickBudgetWizard(models.TransientModel):
             any_budget = True
 
         if not any_budget:
-            raise UserError(_("There is no existing Budget within those dates. Please either choose different dates or make new Budget from a Sales Order."))
+            print "There is no existing Budget within those dates. We need to make a new Budget from a Sales Order."
             return False
 
         if any_budget:
@@ -136,13 +136,13 @@ class PickBudgetWizard(models.TransientModel):
         - keep track of bookings on budget_debit objects
         - if the open_budget is spent request new one via pick_budget(budget_list)
         """
-        consolidated_timesheets = self.consolidate_timesheets(current_project)
+        consolidated_timesheets = self.consolidate_timesheets(date_from_as_datetime, midnight_date_until, current_project)
 
         print "consolidated_timesheets"
         print consolidated_timesheets
 
 
-        open_budget_id = self.pick_budget(date_from_as_datetime, midnight_date_until,current_project)
+        open_budget_id = self.pick_budget(current_project)
         open_budget = self.env["helpdesk.budget"].search([('id', '=', open_budget_id)])
 
         while len(consolidated_timesheets) > 0:
@@ -177,7 +177,7 @@ class PickBudgetWizard(models.TransientModel):
 
             for id in timesheet_ids:
                 timesheet = self.env["account.analytic.line"].search([('id', '=', id)])
-                timesheet.write({"budget_debit_id": new_bd.id, "amount_due": 0})
+                timesheet.write({"budget_debit_ids": (4, new_bd.id)}) # TODO
 
             open_budget.write({"amount_remaining" : new_amount_remaining}) # This does not seem to work correctly
 
@@ -185,21 +185,30 @@ class PickBudgetWizard(models.TransientModel):
                 print "Warning: we need to tranfer to another Budget, this one is used up!"
 
                 consolidated_timesheets[0] = (timesheet_date, amount_to_transfer, timesheet_ids) # make sure this actually modifies the cons timesheets
-                open_budget_id = self.pick_budget(date_from_as_datetime, midnight_date_until, current_project)
+                open_budget_id = self.pick_budget(current_project)
 
                 if open_budget_id is False:
-                    new_name = "Back-order of " + str(timesheet_ids)
-                    back_order_ticket_amount =  amount_to_transfer/current_project.ticketprice*current_project.tickettime
-                    print "back_order_ticket_amount"
-                    print back_order_ticket_amount
-                    nt = self.env["account.analytic.line"]
-                    timesheet_to_write = {'name': new_name,
-                                          'amount': -amount_to_transfer,
-                                          'amount_due': amount_to_transfer,
-                                          'unit_amount': back_order_ticket_amount,
-                                          'project_id': current_project.id,
-                                          'date':timesheet_date,}
-                    new_back_order_timesheet = nt.create(timesheet_to_write)
+                    # TODO remake to make a new negative Budget, not a Timesheet
+
+                    new_name = "Payment for Extra Helpdesk Timesheet(s): " + str(timesheet_ids)
+
+                    # make a corresponding Sale Order
+                    new_so = self.env["sale.order"]
+                    so_to_write = {'name': new_name,
+                                   #'date_order':
+                                   }
+                    new_sale_order = new_so.create(so_to_write)
+
+                    # make a new NEGATIVE Budget
+                    new_budget = self.env["helpdesk.budget"]
+
+                    budget_to_write = {'sale_order_id':new_sale_order,
+                                       'project_id': current_project,
+                                       'amount': -amount_to_transfer,
+                                       'amount_remaining': -amount_to_transfer,
+                                        }
+
+                    new_helpdesk_budget = new_budget.create(budget_to_write)
 
                 else:
                     open_budget = self.env["helpdesk.budget"].search([('id', '=', open_budget_id)])
