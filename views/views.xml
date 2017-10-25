@@ -49,7 +49,7 @@
             <field name="arch" type="xml">
                 <form string="Choose the relevant dates">
 
-                    <group string="Please pick the dates:">
+                    <group string="Please pick the dates for Timesheets:">
 
                         <field name="date_from" widget="date"/>
                         <field name="date_until" widget="date"/>
