@@ -90,7 +90,6 @@ class PickBudgetWizard(models.TransientModel):
                 negative_budgets.sort(key=itemgetter(2))  # sort by date, then return the oldest
                 return negative_budgets[0][0]
             else:
-                # TODO make new Budget for booking
                 # tasks_from_current_project = self.env['project.task'].search([('project_id', '=', current_project.id)])
                 # if len(tasks_from_current_project) > 0:
                 #     partner_id = tasks_from_current_project[0].partner_id
