@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <template id = "helpdesk_report_pdf">
+
+        </template>
+    </data>
+</odoo>

@@ -85,37 +85,36 @@ class PickBudgetWizard(models.TransientModel):
         if len(budget_list) > 0: # This is the normal scenario
             budget_list.sort(key=itemgetter(2))  # sort by date, then return the oldest
             return budget_list[0][0]
+        elif len(negative_budgets) > 0:  # We are running credit
+            negative_budgets.sort(key=itemgetter(2))  # sort by date, then return the oldest
+            return negative_budgets[0][0]
         else:
-            if len(negative_budgets) > 0:  # We are running credit
-                negative_budgets.sort(key=itemgetter(2))  # sort by date, then return the oldest
-                return negative_budgets[0][0]
-            else:
-                # tasks_from_current_project = self.env['project.task'].search([('project_id', '=', current_project.id)])
-                # if len(tasks_from_current_project) > 0:
-                #     partner_id = tasks_from_current_project[0].partner_id
-                #
-                # if not partner_id:
-                #     raise UserError("Please fill in Customer for the Project, then retry.")
-                #
-                # # make a corresponding Sale Order
-                # new_so = self.env["sale.order"]
-                # so_to_write = {'name': "SO Helpdesk Budget",
-                #                'partner_id': partner_id,
-                #                # 'date_order': date.today(),
-                #                }
-                # new_sale_order = new_so.create(so_to_write)
+            # tasks_from_current_project = self.env['project.task'].search([('project_id', '=', current_project.id)])
+            # if len(tasks_from_current_project) > 0:
+            #     partner_id = tasks_from_current_project[0].partner_id
+            #
+            # if not partner_id:
+            #     raise UserError("Please fill in Customer for the Project, then retry.")
+            #
+            # # make a corresponding Sale Order
+            # new_so = self.env["sale.order"]
+            # so_to_write = {'name': "SO Helpdesk Budget",
+            #                'partner_id': partner_id,
+            #                # 'date_order': date.today(),
+            #                }
+            # new_sale_order = new_so.create(so_to_write)
 
-                # make a new empty Budget
-                new_budget = self.env["helpdesk.budget"]
+            # make a new empty Budget
+            new_budget = self.env["helpdesk.budget"]
 
-                budget_to_write = {#'sale_order_id': new_sale_order,
-                                   'project_id': current_project.id,
-                                   'amount': 0,
-                                   'amount_remaining': 0,
-                                   }
+            budget_to_write = {#'sale_order_id': new_sale_order,
+                'project_id': current_project.id,
+                'amount': 0,
+                'amount_remaining': 0,
+            }
 
-                new_helpdesk_budget = new_budget.create(budget_to_write)
-                return new_helpdesk_budget.id
+            new_helpdesk_budget = new_budget.create(budget_to_write)
+            return new_helpdesk_budget.id
 
 
     @api.multi
