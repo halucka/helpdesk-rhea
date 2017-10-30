@@ -7,7 +7,7 @@ class helpdesk_report_pdf(models.AbstractModel):
 # https://www.odoo.com/forum/help-1/question/how-to-call-report-action-from-method-or-inside-method-17159
 
 # this should be action to get a report after clicking on Button
-    def check_report(self):
+    def generate_report(self):
         context = {}
 
         datas = {
