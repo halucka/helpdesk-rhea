@@ -5,7 +5,7 @@
     <report
     id="action_report_helpdesk_activity"
     string="Helpdesk Activities"
-    model="budget.debit"
+    model="helpdesk.budget"
     report_type="qweb-pdf"
     name="helpdesk_rhea.report_helpdesk_activity"
     file="helpdesk_rhea.report_helpdesk_activity"
