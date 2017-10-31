@@ -6,11 +6,19 @@ class report_helpdesk_activity(models.AbstractModel):
     @api.model
     def render_html(self, docids, data=None):
         data = data if data is not None else {}
+        budgets = self.env['helpdesk.budget'].search([])
+        timesheets = self.env['account.analytic.line'].search([])
         docargs = {
-            'data': data,
+            'data': {'budgets': budgets,
+            'timesheets': timesheets,}
         }
 
         return self.env['report'].render('helpdesk_rhea.report_helpdesk_activity', docargs)
+
+
+
+    def _get_budgets(self):
+        pass
 
 # https://www.odoo.com/forum/help-1/question/how-to-call-report-action-from-method-or-inside-method-17159
 

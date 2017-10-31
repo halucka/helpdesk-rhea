@@ -3,17 +3,29 @@
 <template id="report_helpdesk_activity">
     <t t-call="report.html_container">
         <t t-call="report.internal_layout">
+            <t t-foreach="docs" t-as="o"> <!-- cela rend le contexte des données du modèle accessibles à travers la variable "o" -->v
             <div class="page">
-                <h2>Price List</h2>
+
+                    <div class="header">
+                        <div class="row">
+                            <div class="col-xs-4 col-xs-offset-8">
+                                <strong>Picture would be here</strong>
+                                <img src='../static/CompanyLogo.png'/>
+                            </div>
+                        </div>
+                    </div>
+
+
+                <h2>Helpdesk Activities</h2>
 
                 <div class="row mt32 mb32">
                     <div class="col-xs-3">
-                        <strong>Price List Name</strong>:<br/>
-                        <span t-esc="data['pricelist'].name"/>
+                        <strong>Budgets</strong>:<br/>
+                        <span t-esc="data['budgets']"/>
                     </div>
                     <div class="col-xs-3">
-                        <strong>Currency</strong>:<br/>
-                        <span t-esc="data['pricelist'].currency_id.name"/>
+                        <strong>Timesheets</strong>:<br/>
+                        <span t-esc="data['timesheets']"/>
                     </div>
                     <div class="col-xs-3">
                         <strong>Print date</strong>:<br/>
@@ -27,38 +39,64 @@
                             <th>
                                 <strong>Description</strong>
                             </th>
-                            <t t-foreach="data['quantities']" t-as="quantity">
-                                <th><strong t-esc="'%s units' % quantity"/></th>
+                            <t t-foreach="data['timesheets']" t-as="timesheet">
+                                <th><strong t-esc="'%s units' % timesheet"/></th>
                             </t>
                         </tr>
                     </thead>
                     <tbody>
-                        <t t-foreach="data['categories_data']" t-as="categ_data">
+                        <t t-foreach="data['budgets']" t-as="budget">
                             <tr>
                                 <td colspan="100">
-                                    <strong t-esc="categ_data['category'].name"/>
+                                    <strong t-esc="budget.sale_order_id"/>
                                 </td>
-                            </tr>
-                            <tr t-foreach="categ_data['products']" t-as="product">
-                                <td>
-                                    <t t-if="product.code">
-                                        [<span t-esc="product.code"/>]
-                                    </t>
-                                    <span t-esc="product.name"/>
-                                </td>
-                                <t t-foreach="data['quantities']" t-as="quantity">
-                                    <td><strong t-esc="categ_data['prices'][product.id][quantity]"
-                                                t-esc-options="{
-                                                    'widget': 'monetary',
-                                                    'display_currency': data['pricelist'].currency_id}"/>
-                                    </td>
-                                </t>
                             </tr>
                         </t>
                     </tbody>
                 </table>
+
+
+      <div class="footer">
+
+         <!-- PREMIERE LIGNE -->
+         <div class="row">
+             <div class="col-xs-8">
+                <strong>General Information:</strong><br/>
+                Line 1<br/>
+                Line 2<br/>
+                Line 3<br/>
+                Line 4
+             </div>
+             <div class="col-xs-4" style="text-align:right">
+                <strong>Bank Details:</strong><br/>
+                Line 1<br/>
+                Line 2<br/>
+                Line 3<br/>
+                Line 4
+            </div>
+         </div>
+
+         <!-- DEUXIEME LIGNE -->
+         <div class="row mt16 mb16" style="text-align:center">                           <strong>THANK YOU FOR YOUR BUSINESS</strong>
+         </div>
+            <!-- TROISIEME LIGNE -->
+         <div class="row" style="background-color:#568eff;color:#ffffff;">
+            <div class="col-xs-8">
+               <strong>Company Tag Line</strong><br/>
+               Line 1<br/>
+               Line 2<br/>
+               Line 3
+            </div>
+            <div class="col-xs-4" style="text-align:right">
+               Page <span class="page"/> of <span class="topage"/>
+            </div>
+         </div>
+      </div>
+
+
             </div>
         </t>
+    </t>
     </t>
 </template>
 </odoo>
