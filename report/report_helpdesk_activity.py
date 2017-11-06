@@ -9,6 +9,7 @@ class report_helpdesk_activity(models.AbstractModel):
         budgets = self.env['helpdesk.budget'].search([])
         timesheets = self.env['account.analytic.line'].search([])
         docargs = {
+            'docs': budgets,
             'data': {'budgets': budgets,
             'timesheets': timesheets,}
         }
