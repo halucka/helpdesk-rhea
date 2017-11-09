@@ -9,7 +9,11 @@ class HelpdeskBudget(models.Model):
     sale_order_date = fields.Datetime('Order Date', related='sale_order_id.date_order')
     amount = fields.Float('Total Amount', compute='_compute_amount')
     amount_remaining = fields.Float('Amount Remaining')
-
+    # TODO work in progress
+    budgetdebit_ids = fields.One2many(
+               'budget.debit', 'budget_id',
+               string='Budget Debits'
+           )
 
     @api.multi
     @api.depends('sale_order_id')

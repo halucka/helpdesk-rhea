@@ -89,21 +89,6 @@ class PickBudgetWizard(models.TransientModel):
             negative_budgets.sort(key=itemgetter(2))  # sort by date, then return the oldest
             return negative_budgets[0][0]
         else:
-            # tasks_from_current_project = self.env['project.task'].search([('project_id', '=', current_project.id)])
-            # if len(tasks_from_current_project) > 0:
-            #     partner_id = tasks_from_current_project[0].partner_id
-            #
-            # if not partner_id:
-            #     raise UserError("Please fill in Customer for the Project, then retry.")
-            #
-            # # make a corresponding Sale Order
-            # new_so = self.env["sale.order"]
-            # so_to_write = {'name': "SO Helpdesk Budget",
-            #                'partner_id': partner_id,
-            #                # 'date_order': date.today(),
-            #                }
-            # new_sale_order = new_so.create(so_to_write)
-
             # make a new empty Budget
             new_budget = self.env["helpdesk.budget"]
 
@@ -165,16 +150,17 @@ class PickBudgetWizard(models.TransientModel):
             bd_to_write = {"budget_id" : open_budget_id,
                            "project_id": current_project.id,
                            "amount": timesheet_cost,
+                           "timesheet_ids": [(4, [timesheet_ids])]
                            }
 
             new_bd = bd.create(bd_to_write)
 
             for id in timesheet_ids:
                 timesheet = self.env["account.analytic.line"].search([('id', '=', id)])
-                timesheet.write({"budget_debit_ids": (4, new_bd.id),
+                timesheet.write({"budget_debit_ids": [(4, [new_bd.id])],
                                  "is_paid": True})
 
-            open_budget.write({"amount_remaining" : new_amount_remaining})
+            open_budget.write({"amount_remaining": new_amount_remaining})
 
             if amount_to_transfer is not None:
                 print "Warning: we need to tranfer to another Budget, this one is used up!"

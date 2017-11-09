@@ -7,5 +7,7 @@ from . import helpdesk_timesheet
 from . import pick_budget_wizard
 from . import pick_project_wizard
 from . import sale_order
+from . import report_wizard
+
 
 

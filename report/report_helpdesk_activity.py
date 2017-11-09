@@ -5,6 +5,7 @@ class report_helpdesk_activity(models.AbstractModel):
 
     @api.model
     def render_html(self, docids, data=None):
+        print self          # TODO
         data = data if data is not None else {}
         budgets = self.env['helpdesk.budget'].search([])
         timesheets = self.env['account.analytic.line'].search([])

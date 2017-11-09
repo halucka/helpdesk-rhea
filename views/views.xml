@@ -22,6 +22,7 @@
                 <xpath expr="/form/*" position="before">
                     <header>
                         <button name="debit_timesheet_on_budget" type="object" string="Book timesheet on budget"/>
+                        <button name="launch_report_wizard" type="object" string="Make a report"/>
                     </header>
                 </xpath>
 
@@ -58,6 +59,30 @@
 
                     <footer>
                         <button name="reconciliate_budgets_and_timesheets" string="OK" type="object" class="oe_highlight"/>
+                        <button name="cancel" string="Cancel" type="object" special="cancel" class="oe_link"/>
+                    </footer>
+
+                </form>
+            </field>
+        </record>
+
+        <!-- Wizard for generating Helpdesk Activities Report-->
+        <record id="budget_wizard_form_view" model="ir.ui.view">
+            <field name="name">wizard.form.report</field>
+            <field name="model">report.wizard</field>
+             <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Choose the relevant dates">
+
+                    <group string="Please pick the dates:">
+
+                        <field name="date_from" widget="date"/>
+                        <field name="date_until" widget="date"/>
+
+                    </group>
+
+                    <footer>
+                        <button name="make_report" string="Make report" type="object" class="oe_highlight"/>
                         <button name="cancel" string="Cancel" type="object" special="cancel" class="oe_link"/>
                     </footer>
 

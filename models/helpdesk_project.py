@@ -2,8 +2,6 @@
 
 from odoo import fields, models, api, _
 
-
-
 class Project(models.Model):
     """Extends Project with attribute is_servicedesk and allows to associate budgets with Projects"""
     _inherit = 'project.project'
@@ -53,4 +51,20 @@ class Project(models.Model):
             'target': 'new',
             'key2': 'client_action_multi',
             'context': {'project_id': self.id,},
+        }
+
+    @api.multi
+    def launch_report_wizard(self):
+        # run a wizard to generate Helpdesk Budgets & Timesheets report
+
+        return {
+            'name': _('Select dates: '),
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'report.wizard',
+            'view_id': False,
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+            'key2': 'client_action_multi',
+            'context': {'project_id': self.id, },
         }
