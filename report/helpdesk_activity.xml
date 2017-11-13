@@ -1,96 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-<template id="report_helpdesk_activity">
-    <t t-call="report.html_container">
-
+    <template id="report_helpdesk_activity">
+        <t t-call="report.html_container">
             <div class="page">
-                    <!--<div class="header">-->
-                        <div class="row">
-                            <div class="col-xs-4 col-xs-offset-8">
-                                <img t-att-src="'helpdesk_rhea/static/CompanyLogo.png'"/>
-                            </div>
-                        </div>
-                    <!--</div>-->
+                <link rel='stylesheet' href='/web/static/lib/bootstrap/css/bootstrap.css'/>
+                <link rel='stylesheet' href='/web/static/lib/fontawesome/css/font-awesome.css'/>
 
-
+                <div class="header">
+                    <!--<div class="row">-->
+                    <div class="col-xs-4 col-xs-offset-8">
+                        <img t-att-src="'helpdesk_rhea/static/CompanyLogo.png'"/>
+                    </div>
+                </div>
                 <h2>Helpdesk Activities</h2>
+                <!-- Try to identify client from Sale Order or from Timesheet-->
+                <t t-set="client" t-value="data['budgets'][0].sale_order_id.partner_id"/>
+                <t t-if="not client">
+                    <t t-set="client" t-value="data['timesheets'][0].partner_id"/>
+                </t>
+                <!-- print address if the client had been identified, otherwise skip-->
+                <t t-if="client">
+                    <p><t t-esc="client.name" /></p>
+                    <p><t t-esc="client.street" /></p>
+                    <p><t t-esc="client.zip" /> <t t-esc="client.city" /></p>
+                </t>
 
-                    <!--<t t-set="client" t-value="o.sale_order_id.partner_id"/>-->
-                    <!--<t t-if="not client">-->
-                        <!--<t t-set="client" t-value="data['timesheets'][0].partner_id"/>-->
-                        <!--</t>-->
-
-                <!--<p><t t-esc="client.name" /></p>-->
-                    <!--<p><t t-esc="client.street" /></p>-->
-                    <!--<p><t t-esc="client.zip" /> <t t-esc="client.city" /></p>-->
-
-                <p/>
-                <p>Ordered budget</p>
+                <h3>Ordered budget</h3>
                 <table class="table table-bordered">
                     <thead>
-                    <tr>
-                        <th>Sale Order</th>
-                        <th>Start date</th>
-                        <th>Amount</th>
-                        <th>Amount Remaining</th>
-                    </tr>
+                        <tr>
+                            <th>Sale Order</th>
+                            <th>Start date</th>
+                            <th>Amount</th>
+                            <th>Amount Remaining</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <t t-foreach="data['budgets']" t-as="budget">
-                        <tr>
-                            <td><t t-esc="budget.sale_order_id.name"/></td>
-                            <td><t t-esc="budget.sale_order_date"/></td>
-                            <td><t t-esc="budget.amount"/></td>
-                            <td><t t-esc="budget.amount_remaining"/></td>
-                        </tr>
-                    </t>
+                        <t t-foreach="data['budgets']" t-as="budget">
+                            <tr>
+                                <td><t t-esc="budget.sale_order_id.name"/></td>
+                                <td><t t-esc="budget.sale_order_date"/></td>
+                                <td><t t-esc="budget.amount"/></td>
+                                <td><t t-esc="budget.amount_remaining"/></td>
+                            </tr>
+                        </t>
                     </tbody>
                 </table>
 
-                <!--<p>Budget: <t t-esc="o"/></p>-->
-                <!--<p>Sale order: <t t-esc="o.sale_order_id"/></p>-->
-                <!--<p>Client: <t t-esc="o.sale_order_id.partner_id"/></p>-->
-                <!--<p>Project: <t t-esc="o.project_id"/></p>-->
+                <br></br>
 
-                <!--<p>Amount remaining: <t t-esc="o.amount_remaining"/></p>-->
-
-                <p>Budget use</p>
-
-
-                    <p>Summary of budget use:</p>
-                    <p>Budget purchased</p>
-                    <p>Budget used:</p>
-                    <p>Budget remaining:</p>
-
-                <p>Activities in the selected period:</p>
+                <h3>Budget use</h3>
                 <table class="table table-bordered">
                     <thead>
-                    <tr>
-                        <th>Employee</th>
-                        <th>Date</th>
-                        <th>Hours</th>
-                        <th>Ticket</th>
-                        <th>Project</th>
-                    </tr>
+                        <tr>
+                            <th>Sale Order/Project</th>
+                            <th>Month</th>
+                            <th># of tickets</th>
+                            <th>Amount</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <t t-foreach="data['timesheets']" t-as="timesheet">
-                        <tr>
-                            <td><t t-esc="timesheet.user_id.name"/></td>
-                            <td><t t-esc="timesheet.date"/></td>
-                            <td><t t-esc="timesheet.unit_amount"/></td>
-                            <td><t t-esc="timesheet.name"/></td>
-                            <td><t t-esc="timesheet.project_id.name"/></td>
-                        </tr>
-                    </t>
+                        <t t-foreach="data['budgetdebits']" t-as="bd">
+                            <tr>
+                                <td><t t-esc="bd.budget_id.sale_order_id.name"/></td>
+                                <td><t t-esc="bd.project_id.name"/></td>
+                                <td><t t-esc="bd.timesheet_ids"/></td>
+                                <td><t t-esc="bd.amount"/></td>
+                            </tr>
+                        </t>
                     </tbody>
                 </table>
 
+                <br></br>
 
-
+                <h3>Budget Use Summary</h3>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td>Budget purchased:</td>
+                            <td><t t-esc="data['total_budget_purchased']"/></td>
+                        </tr>
+                        <tr>
+                            <td>Budget used:</td>
+                            <td><t t-esc="data['total_budget_used']"/></td>
+                        </tr>
+                        <tr>
+                            <td>Budget remaining:</td>
+                            <td><t t-esc="data['total_budget_remaining']"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br></br>
+                <h3>Activities in the selected period</h3>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Employee</th>
+                            <th>Date</th>
+                            <th>Hours</th>
+                            <th>Ticket</th>
+                            <th>Project</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="data['timesheets']" t-as="timesheet">
+                            <tr>
+                                <td><t t-esc="timesheet.user_id.name"/></td>
+                                <td><t t-esc="timesheet.date"/></td>
+                                <td><t t-esc="str(round(timesheet.unit_amount, 2))"/></td>
+                                <td><t t-esc="timesheet.name"/></td>
+                                <td><t t-esc="timesheet.project_id.name"/></td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
             </div>
-
-
-    </t>
-</template>
+        </t>
+    </template>
 </odoo>

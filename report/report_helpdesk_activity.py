@@ -13,11 +13,29 @@ class report_helpdesk_activity(models.AbstractModel):
         print data    # {u'project': 6, u'date_from': u'2017-11-01 00:00:00', u'date_until': u'2017-11-30 00:00:00'}
         data = data if data is not None else {}
         budgets = self.env['helpdesk.budget'].search([('project_id', '=', data['project'])])
+
+        total_budget_purchased = 0
+        total_budget_used = 0
+        total_budget_remaining = 0
+
+        for budget in budgets:
+            total_budget_purchased += budget.amount
+            total_budget_remaining += budget.amount_remaining
+
+        total_budget_used = total_budget_purchased - total_budget_remaining
+
         timesheets = self.env['account.analytic.line'].search([('project_id', '=', data['project'])])
+        budgetdebits = self.env['budget.debit'].search([('project_id', '=', data['project'])])
+
         docargs = {
             'docs': budgets,
             'data': {'budgets': budgets,
-            'timesheets': timesheets,}
+                    'timesheets': timesheets,
+                     'budgetdebits': budgetdebits,
+                     'total_budget_purchased': total_budget_purchased,
+                     'total_budget_used': total_budget_used,
+                     'total_budget_remaining': total_budget_remaining,
+                     }
         }
 
         return self.env['report'].render('helpdesk_rhea.report_helpdesk_activity', docargs)
