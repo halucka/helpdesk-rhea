@@ -1,17 +1,16 @@
 from odoo import fields, models, api, _
+from datetime import datetime, timedelta, date
 
 class report_helpdesk_activity(models.AbstractModel):
     _name = 'report.helpdesk_rhea.report_helpdesk_activity'
 
     @api.model
     def render_html(self, docids, data=None):
-        print "self"
-        print self          # TODO
-        print "docids"
-        print docids  # [18]
-        print "data"
-        print data    # {u'project': 6, u'date_from': u'2017-11-01 00:00:00', u'date_until': u'2017-11-30 00:00:00'}
-        data = data if data is not None else {}
+
+        date_from_as_datetime = datetime.strptime(data['date_from'], '%Y-%m-%d %H:%M:%S')
+        midnight_date_until = datetime.strptime(data['date_until'], '%Y-%m-%d %H:%M:%S') + timedelta(days=1,
+                                                                                                  microseconds=-1)
+
         budgets = self.env['helpdesk.budget'].search([('project_id', '=', data['project'])])
 
         total_budget_purchased = 0
@@ -24,17 +23,44 @@ class report_helpdesk_activity(models.AbstractModel):
 
         total_budget_used = total_budget_purchased - total_budget_remaining
 
-        timesheets = self.env['account.analytic.line'].search([('project_id', '=', data['project'])])
+        # find Timesheets for current Project within the dates selected on the wizard
+        timesheets = []
+        for record in self.env['account.analytic.line'].search([('project_id', '=', data['project'])]):
+            date_as_datetime = datetime.strptime(record.date, '%Y-%m-%d')  # for Datetime '%Y-%m-%d %H:%M:%S'
+            date_correct = (date_as_datetime > date_from_as_datetime) and (date_as_datetime < midnight_date_until)
+            if date_correct:
+                timesheets.append(record)
+
         budgetdebits = self.env['budget.debit'].search([('project_id', '=', data['project'])])
+
+        budgetdebit_dict = {}  # dict of lists like {'February 2017': [5, 225.0],}
+        for bd in budgetdebits:
+            bd_month_year = datetime.strptime(bd.create_date, '%Y-%m-%d %H:%M:%S').strftime("%m/%Y")
+            if not bd_month_year in budgetdebit_dict:
+                budgetdebit_dict[bd_month_year] = [1, bd.amount]
+            else:
+                budgetdebit_dict[bd_month_year][0] += 1
+                budgetdebit_dict[bd_month_year][1] += bd.amount
+
+        budgetdebit_stats = []
+        for key in budgetdebit_dict:
+           budgetdebit_stats.append((key, budgetdebit_dict[key][0], budgetdebit_dict[key][1]))
+
+        print budgetdebit_stats
+
+
 
         docargs = {
             'docs': budgets,
             'data': {'budgets': budgets,
                     'timesheets': timesheets,
                      'budgetdebits': budgetdebits,
+                     'budgetdebit_stats': budgetdebit_stats,
                      'total_budget_purchased': total_budget_purchased,
                      'total_budget_used': total_budget_used,
                      'total_budget_remaining': total_budget_remaining,
+                     'date_from': date_from_as_datetime.date(),
+                     'date_until': midnight_date_until.date(),
                      }
         }
 
@@ -42,23 +68,3 @@ class report_helpdesk_activity(models.AbstractModel):
 
 
 
-    def _get_budgets(self):
-        pass
-
-# https://www.odoo.com/forum/help-1/question/how-to-call-report-action-from-method-or-inside-method-17159
-
-# # this should be action to get a report after clicking on Button
-#     def generate_report(self):
-#         context = {}
-#
-#         datas = {
-#             'ids': context.get('active_ids', []),
-#             'model': 'account.analytic.account',
-#             'form': data
-#         }
-#
-#         return {
-#             'type': 'ir.actions.report.xml',
-#             'report_name': 'account.analytic.account.balance',  # change this for my report name
-#             'datas': {},  # dictionary
-#         }
