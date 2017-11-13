@@ -12,13 +12,13 @@ class ReportWizard(models.TransientModel):
     # action for a button
     @api.multi
     def make_report(self):
-        current_project = self.env["project.project"].search([('id', '=', self._context['project_id'])])
-        print current_project
         datas = {'project': self._context['project_id'],
+                 'date_from': self.date_from,
+                 'date_until': self.date_until,
                  }
         return {
         'type' : 'ir.actions.report.xml',
         'report_name' : 'helpdesk_rhea.report_helpdesk_activity',
-        'datas' : datas,
+        'datas' : datas,  # accessed through "data" variable in render_html function in /helpdesk_rhea/report/report_helpdesk_activity.py
         }
 

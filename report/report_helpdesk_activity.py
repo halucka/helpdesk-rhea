@@ -5,10 +5,15 @@ class report_helpdesk_activity(models.AbstractModel):
 
     @api.model
     def render_html(self, docids, data=None):
+        print "self"
         print self          # TODO
+        print "docids"
+        print docids  # [18]
+        print "data"
+        print data    # {u'project': 6, u'date_from': u'2017-11-01 00:00:00', u'date_until': u'2017-11-30 00:00:00'}
         data = data if data is not None else {}
-        budgets = self.env['helpdesk.budget'].search([])
-        timesheets = self.env['account.analytic.line'].search([])
+        budgets = self.env['helpdesk.budget'].search([('project_id', '=', data['project'])])
+        timesheets = self.env['account.analytic.line'].search([('project_id', '=', data['project'])])
         docargs = {
             'docs': budgets,
             'data': {'budgets': budgets,

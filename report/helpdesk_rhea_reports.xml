@@ -8,6 +8,7 @@
         report_type="qweb-pdf"
         name="helpdesk_rhea.report_helpdesk_activity"
         file="helpdesk_rhea.report_helpdesk_activity"
+        menu="False"
         />
     </data>
 </odoo>

@@ -2,10 +2,8 @@
 <odoo>
 <template id="report_helpdesk_activity">
     <t t-call="report.html_container">
-        <!--<t t-call="report.external_layout">-->
 
             <div class="page">
-                <t t-foreach="docs" t-as="o">
                     <!--<div class="header">-->
                         <div class="row">
                             <div class="col-xs-4 col-xs-offset-8">
@@ -17,103 +15,81 @@
 
                 <h2>Helpdesk Activities</h2>
 
-                    <t t-set="client" t-value="o.sale_order_id.partner_id"/>
-                    <t t-if="not client">
-                        <t t-set="client" t-value="data['timesheets'][0].partner_id"/>
-                        </t>
+                    <!--<t t-set="client" t-value="o.sale_order_id.partner_id"/>-->
+                    <!--<t t-if="not client">-->
+                        <!--<t t-set="client" t-value="data['timesheets'][0].partner_id"/>-->
+                        <!--</t>-->
 
-                <p><t t-esc="client.name" /></p>
-                    <p><t t-esc="client.street" /></p>
-                    <p><t t-esc="client.zip" /> <t t-esc="client.city" /></p>
+                <!--<p><t t-esc="client.name" /></p>-->
+                    <!--<p><t t-esc="client.street" /></p>-->
+                    <!--<p><t t-esc="client.zip" /> <t t-esc="client.city" /></p>-->
 
                 <p/>
-                <p>Budget: <t t-esc="o"/></p>
-                <p>Sale order: <t t-esc="o.sale_order_id"/></p>
-                <p>Client: <t t-esc="o.sale_order_id.partner_id"/></p>
-                <p>Project: <t t-esc="o.project_id"/></p>
-
-                <p>Amount remaining: <t t-esc="o.amount_remaining"/></p>
-
-
-
-                <div class="row mt32 mb32">
-                    <div class="col-xs-3">
-                        <strong>Budgets</strong>:<br/>
-                        <span t-esc="data['budgets']"/>
-                    </div>
-                    <div class="col-xs-3">
-                        <strong>Timesheets</strong>:<br/>
-                        <span t-esc="data['timesheets']"/>
-                    </div>
-                    <div class="col-xs-3">
-                        <strong>Print date</strong>:<br/>
-                        <t t-esc="datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')"/>
-                    </div>
-                </div>
-
-                <table class="table table-condensed">
+                <p>Ordered budget</p>
+                <table class="table table-bordered">
                     <thead>
-                        <tr>
-                            <th>
-                                <strong>Description</strong>
-                            </th>
-                            <t t-foreach="data['timesheets']" t-as="timesheet">
-                                <th><strong t-esc="'%s units' % timesheet"/></th>
-                            </t>
-                        </tr>
+                    <tr>
+                        <th>Sale Order</th>
+                        <th>Start date</th>
+                        <th>Amount</th>
+                        <th>Amount Remaining</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <t t-foreach="data['budgets']" t-as="budget">
-                            <tr>
-                                <td colspan="100">
-                                    <strong t-esc="budget.sale_order_id"/>
-                                </td>
-                            </tr>
-                        </t>
+                    <t t-foreach="data['budgets']" t-as="budget">
+                        <tr>
+                            <td><t t-esc="budget.sale_order_id.name"/></td>
+                            <td><t t-esc="budget.sale_order_date"/></td>
+                            <td><t t-esc="budget.amount"/></td>
+                            <td><t t-esc="budget.amount_remaining"/></td>
+                        </tr>
+                    </t>
+                    </tbody>
+                </table>
+
+                <!--<p>Budget: <t t-esc="o"/></p>-->
+                <!--<p>Sale order: <t t-esc="o.sale_order_id"/></p>-->
+                <!--<p>Client: <t t-esc="o.sale_order_id.partner_id"/></p>-->
+                <!--<p>Project: <t t-esc="o.project_id"/></p>-->
+
+                <!--<p>Amount remaining: <t t-esc="o.amount_remaining"/></p>-->
+
+                <p>Budget use</p>
+
+
+                    <p>Summary of budget use:</p>
+                    <p>Budget purchased</p>
+                    <p>Budget used:</p>
+                    <p>Budget remaining:</p>
+
+                <p>Activities in the selected period:</p>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Date</th>
+                        <th>Hours</th>
+                        <th>Ticket</th>
+                        <th>Project</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <t t-foreach="data['timesheets']" t-as="timesheet">
+                        <tr>
+                            <td><t t-esc="timesheet.user_id.name"/></td>
+                            <td><t t-esc="timesheet.date"/></td>
+                            <td><t t-esc="timesheet.unit_amount"/></td>
+                            <td><t t-esc="timesheet.name"/></td>
+                            <td><t t-esc="timesheet.project_id.name"/></td>
+                        </tr>
+                    </t>
                     </tbody>
                 </table>
 
 
-      <div class="footer">
 
-         <!-- PREMIERE LIGNE -->
-         <div class="row">
-             <div class="col-xs-8">
-                <strong>General Information:</strong><br/>
-                Line 1<br/>
-                Line 2<br/>
-                Line 3<br/>
-                Line 4
-             </div>
-             <div class="col-xs-4" style="text-align:right">
-                <strong>Bank Details:</strong><br/>
-                Line 1<br/>
-                Line 2<br/>
-                Line 3<br/>
-                Line 4
             </div>
-         </div>
 
-         <!-- DEUXIEME LIGNE -->
-         <div class="row mt16 mb16" style="text-align:center">                           <strong>THANK YOU FOR YOUR BUSINESS</strong>
-         </div>
-            <!-- TROISIEME LIGNE -->
-         <div class="row" style="background-color:#568eff;color:#ffffff;">
-            <div class="col-xs-8">
-               <strong>Company Tag Line</strong><br/>
-               Line 1<br/>
-               Line 2<br/>
-               Line 3
-            </div>
-            <div class="col-xs-4" style="text-align:right">
-               Page <span class="page"/> of <span class="topage"/>
-            </div>
-         </div>
-      </div>
-
-        </t>
-            </div>
-        <!--</t>-->
 
     </t>
 </template>
