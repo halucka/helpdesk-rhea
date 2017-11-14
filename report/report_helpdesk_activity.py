@@ -11,7 +11,7 @@ class report_helpdesk_activity(models.AbstractModel):
         midnight_date_until = datetime.strptime(data['date_until'], '%Y-%m-%d %H:%M:%S') + timedelta(days=1,
                                                                                                   microseconds=-1)
 
-        budgets = self.env['helpdesk.budget'].search([('project_id', '=', data['project'])])
+        budgets = self.env['helpdesk.budget'].search([('project_id', '=', data['project'])]).sorted(key=lambda r: r.sale_order_date)
 
         total_budget_purchased = 0
         total_budget_used = 0
@@ -25,7 +25,7 @@ class report_helpdesk_activity(models.AbstractModel):
 
         # find Timesheets for current Project within the dates selected on the wizard
         timesheets = []
-        for record in self.env['account.analytic.line'].search([('project_id', '=', data['project'])]):
+        for record in self.env['account.analytic.line'].search([('project_id', '=', data['project'])]).sorted(key=lambda r: r.date):
             date_as_datetime = datetime.strptime(record.date, '%Y-%m-%d')  # for Datetime '%Y-%m-%d %H:%M:%S'
             date_correct = (date_as_datetime > date_from_as_datetime) and (date_as_datetime < midnight_date_until)
             if date_correct:
@@ -45,16 +45,20 @@ class report_helpdesk_activity(models.AbstractModel):
         budgetdebit_stats = []
         for key in budgetdebit_dict:
            budgetdebit_stats.append((key, budgetdebit_dict[key][0], budgetdebit_dict[key][1]))
+        budgetdebit_stats.sort()
 
-        print budgetdebit_stats
-
-
+#
+        if len(budgets)>0:
+            client = budgets[0].sale_order_id.partner_id
+        elif len(timesheets)>0:
+            client = timesheets[0].partner_id
+        else:
+            client = None
 
         docargs = {
-            'docs': budgets,
-            'data': {'budgets': budgets,
+            'data': {'client': client,
+                    'budgets': budgets,
                     'timesheets': timesheets,
-                     'budgetdebits': budgetdebits,
                      'budgetdebit_stats': budgetdebit_stats,
                      'total_budget_purchased': total_budget_purchased,
                      'total_budget_used': total_budget_used,
