@@ -63,8 +63,8 @@ class report_helpdesk_activity(models.AbstractModel):
                      'total_budget_purchased': total_budget_purchased,
                      'total_budget_used': total_budget_used,
                      'total_budget_remaining': total_budget_remaining,
-                     'date_from': date_from_as_datetime.date(),
-                     'date_until': midnight_date_until.date(),
+                     'date_from': date_from_as_datetime.strftime("%d-%m-%Y"),
+                     'date_until': midnight_date_until.strftime("%d-%m-%Y"),
                      }
         }
 
