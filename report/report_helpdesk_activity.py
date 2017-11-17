@@ -55,8 +55,15 @@ class report_helpdesk_activity(models.AbstractModel):
         else:
             client = None
 
+        language = client.lang
+        print client
+        print language
+        if not language:
+            language = 'en_US'
+
         docargs = {
             'data': {'client': client,
+                     'lang': language,
                     'budgets': budgets,
                     'timesheets': timesheets,
                      'budgetdebit_stats': budgetdebit_stats,

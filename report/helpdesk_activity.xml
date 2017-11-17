@@ -6,6 +6,7 @@
                 <link rel='stylesheet' href='/web/static/lib/bootstrap/css/bootstrap.css'/>
                 <link rel='stylesheet' href='/web/static/lib/fontawesome/css/font-awesome.css'/>
 
+                <t t-lang="data['lang']">
 
 
                 <div class="pull-left">
@@ -116,6 +117,7 @@
                     </tbody>
                 </table>
                 </div>
+                </t>
             </div>
         </t>
     </template>
