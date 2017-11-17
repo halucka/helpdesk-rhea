@@ -28,6 +28,7 @@
         'views/views.xml',
         'views/helpdesk_budget.xml',
         'security/ir.model.access.csv',
+        'security/security.xml',
         'report/helpdesk_rhea_reports.xml',
         'report/helpdesk_activity.xml',
     ],

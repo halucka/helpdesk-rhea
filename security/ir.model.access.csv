@@ -1,1 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+budget_manager,budget manager,model_helpdesk_rhea_helpdesk_budget,group_manager,1,1,1,1
+budget_read_all,budget all,model_helpdesk_rhea_helpdesk_budget,,1,0,0,0
+
