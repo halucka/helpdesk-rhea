@@ -58,6 +58,8 @@ class report_helpdesk_activity(models.AbstractModel):
         language = client.lang
         print client
         print language
+        # if not language:
+        #     language = user_id.lang
         if not language:
             language = 'en_US'
 

@@ -10,7 +10,7 @@
 
 
                 <div class="pull-left">
-                    <h3><strong>Helpdesk Activities - <t t-esc="data['date_from']"/> - <t t-esc="data['date_until']"/></strong></h3>
+                    <strong><h3>Helpdesk Activities - <t t-esc="data['date_from']"/> - <t t-esc="data['date_until']"/></h3></strong>
                     <br></br>
                     <!-- print address if the client had been identified, otherwise skip-->
                     <t t-if="data['client']">
@@ -29,7 +29,7 @@
 
 
                 <div class="pull-left">
-                <h4><strong> Ordered budget</strong></h4>
+                <strong><h4>Ordered budget</h4></strong>
                 <table class="table table-bordered table-condensed">
                     <thead>
                         <tr>
@@ -53,7 +53,7 @@
 
                 <br></br>
 
-                <h4><strong>Budget use</strong></h4>
+                <strong><h4>Budget use</h4></strong>
                 <table class="table table-bordered table-condensed">
                     <thead>
                         <tr>
@@ -75,7 +75,7 @@
 
                 <br></br>
 
-                <h4><strong>Budget Use Summary</strong></h4>
+                <strong><h4>Budget Use Summary</h4></strong>
                 <table class="table table-bordered table-condensed">
                     <tbody>
                         <tr>
@@ -93,7 +93,7 @@
                     </tbody>
                 </table>
                 <br></br>
-                <h4><strong>Activities in the selected period <t t-esc="data['date_from']"/> - <t t-esc="data['date_until']"/></strong></h4>
+                <strong><h4>Activities in the selected period <t t-esc="data['date_from']"/> - <t t-esc="data['date_until']"/></h4></strong>
                 <table class="table table-bordered table-condensed">
                     <thead>
                         <tr>

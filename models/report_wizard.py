@@ -4,10 +4,10 @@ from odoo import models, fields, api, _
 
 class ReportWizard(models.TransientModel):
     _name = 'report.wizard'
-    _description = "Please select the dates for Timesheets:"
+    _description = _("Please select the dates for Timesheets:")
 
-    date_from = fields.Datetime('Date From')
-    date_until = fields.Datetime('Date Until')
+    date_from = fields.Datetime(string='Date From')
+    date_until = fields.Datetime(string='Date Until')
 
     # action for a button
     @api.multi

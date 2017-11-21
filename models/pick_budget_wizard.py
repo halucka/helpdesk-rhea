@@ -9,10 +9,10 @@ from math import ceil
 
 class PickBudgetWizard(models.TransientModel):
     _name = 'pick.budget.wizard'
-    _description = "Please select the dates for Timesheets:"
+    _description = _("Please select the dates for Timesheets:")
 
-    date_from = fields.Datetime('Date From')
-    date_until = fields.Datetime('Date Until')
+    date_from = fields.Datetime(string='Date From')
+    date_until = fields.Datetime(string='Date Until')
 
 
     # action for a button
@@ -82,7 +82,7 @@ class PickBudgetWizard(models.TransientModel):
         budget_list = [item for item in budget_list_all if item[1] > 0]
         negative_budgets = [item for item in budget_list_all if item[1] < 0]
 
-        if len(budget_list) > 0: # This is the normal scenario
+        if len(budget_list) > 0:  # This is the normal scenario
             budget_list.sort(key=itemgetter(2))  # sort by date, then return the oldest
             return budget_list[0][0]
         elif len(negative_budgets) > 0:  # We are running credit
@@ -90,9 +90,9 @@ class PickBudgetWizard(models.TransientModel):
             return negative_budgets[0][0]
         else:
             # make a new empty Budget
-            new_budget = self.env["helpdesk.budget"]
+            new_budget = self.env['helpdesk.budget']
 
-            budget_to_write = {#'sale_order_id': new_sale_order,
+            budget_to_write = {
                 'project_id': current_project.id,
                 'amount': 0,
                 'amount_remaining': 0,
@@ -111,12 +111,9 @@ class PickBudgetWizard(models.TransientModel):
         - if the open_budget is spent request new one via pick_budget(budget_list)
         """
         consolidated_timesheets = self.consolidate_timesheets(date_from_as_datetime, midnight_date_until, current_project)
-        print "consolidated_timesheets"
-        print consolidated_timesheets
-
+        
         open_budget_id = self.pick_budget(current_project)
         open_budget = self.env["helpdesk.budget"].search([('id', '=', open_budget_id)])
-
 
         while len(consolidated_timesheets) > 0:
 
@@ -133,9 +130,6 @@ class PickBudgetWizard(models.TransientModel):
             timesheet_cost = timesheet_tup[1]
             timesheet_ids = timesheet_tup[2]
 
-            print "timesheet_cost"
-            print timesheet_cost
-
             # check if the consolidated timesheet still fits in the budget
             amount_to_transfer = None
             new_amount_remaining = open_budget.amount_remaining - timesheet_cost
@@ -144,7 +138,6 @@ class PickBudgetWizard(models.TransientModel):
                 amount_to_transfer = -new_amount_remaining
                 new_amount_remaining = 0
 
-            print "Going to write to budget with id: ", open_budget_id
             # make a new budget_debit object
             bd = self.env["budget.debit"]
             bd_to_write = {"budget_id" : open_budget_id,
@@ -163,7 +156,7 @@ class PickBudgetWizard(models.TransientModel):
             open_budget.write({"amount_remaining": new_amount_remaining})
 
             if amount_to_transfer is not None:
-                print "Warning: we need to tranfer to another Budget, this one is used up!"
+                # We need to tranfer to another Budget, this one is used up!
                 consolidated_timesheets[0] = (timesheet_date, amount_to_transfer, timesheet_ids)
                 open_budget_id = self.pick_budget(current_project)
                 open_budget = self.env["helpdesk.budget"].search([('id', '=', open_budget_id)])

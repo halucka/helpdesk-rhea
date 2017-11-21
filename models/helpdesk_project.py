@@ -3,11 +3,11 @@
 from odoo import fields, models, api, _
 
 class Project(models.Model):
-    """Extends Project with attribute is_servicedesk and allows to associate budgets with Projects"""
+    """Extends Project with attribute is_servicedesk and allows to associate Budgets with Projects"""
     _inherit = 'project.project'
-    is_servicedesk = fields.Boolean('Is a servicedesk')
-    ticketprice = fields.Float('Helpdesk Ticket Price', default="25.0")
-    tickettime = fields.Float('Helpdesk Ticket Time Unit in Hours', default="0.25")
+    is_servicedesk = fields.Boolean(string='Is a servicedesk')
+    ticketprice = fields.Float(string='Helpdesk Ticket Price', default="25.0")
+    tickettime = fields.Float(string='Helpdesk Ticket Time Unit in Hours', default="0.25")
     budget_ids = fields.One2many(
                'helpdesk.budget', 'project_id',
                string='Budget ids'
