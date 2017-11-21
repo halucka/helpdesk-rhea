@@ -14,10 +14,7 @@
             <div class="page">
                 <link rel='stylesheet' href='/web/static/lib/bootstrap/css/bootstrap.css'/>
                 <link rel='stylesheet' href='/web/static/lib/fontawesome/css/font-awesome.css'/>
-                <style type="text/css">
-                    <!-- Place your custom styles here -->
-                    h1, h2, h3, h4, h5, h6 {font-weight:bold;}
-                </style>
+
 
 
 
@@ -43,7 +40,7 @@
 
 
                 <div class="pull-left">
-                <strong><h4>Ordered budget</h4></strong>
+                <h4><strong>Ordered budget</strong></h4>
                 <table class="table table-bordered table-condensed">
                     <thead>
                         <tr>
@@ -67,7 +64,7 @@
 
                 <br></br>
 
-                <strong><h4>Budget use</h4></strong>
+                <h4><strong>Budget use</strong></h4>
                 <table class="table table-bordered table-condensed">
                     <thead>
                         <tr>
@@ -89,7 +86,7 @@
 
                 <br></br>
 
-                <strong><h4>Budget Use Summary</h4></strong>
+                <h4><strong>Budget Use Summary</strong></h4>
                 <table class="table table-bordered table-condensed">
                     <tbody>
                         <tr>
@@ -107,7 +104,7 @@
                     </tbody>
                 </table>
                 <br></br>
-                <strong><h4>Activities in the selected period <t t-esc="data['date_from']"/> - <t t-esc="data['date_until']"/></h4></strong>
+                <h4><strong>Activities in the selected period <t t-esc="data['date_from']"/> - <t t-esc="data['date_until']"/></strong></h4>
                 <table class="table table-bordered table-condensed">
                     <thead>
                         <tr>
