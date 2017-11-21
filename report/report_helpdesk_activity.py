@@ -47,7 +47,7 @@ class report_helpdesk_activity(models.AbstractModel):
            budgetdebit_stats.append((key, budgetdebit_dict[key][0], budgetdebit_dict[key][1]))
         budgetdebit_stats.sort()
 
-#
+        # TODO figure out a good way to determine the language of the report
         if len(budgets)>0:
             client = budgets[0].sale_order_id.partner_id
         elif len(timesheets)>0:
