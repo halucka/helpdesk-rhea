@@ -58,12 +58,13 @@ class report_helpdesk_activity(models.AbstractModel):
         language = client.lang
         print client
         print language
+        print timesheets[0].partner_id.lang
         # if not language:
         #     language = user_id.lang
         if not language:
             language = 'en_US'
 
-        docargs = {'docs': timesheets[0],
+        docargs = {'docs': self.env['account.analytic.line'].search([('project_id', '=', data['project'])]),
             'data': {'client': client,
                      'lang': language,
                     'budgets': budgets,

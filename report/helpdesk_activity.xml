@@ -3,8 +3,10 @@
     <!-- Main template -->
     <template id="report_helpdesk_activity">
         <t t-call="report.html_container">
-            <t t-foreach="docs" t-as="doc">
-                <t t-call="helpdesk_rhea.report_helpdesk_activity_document" t-lang="doc.partner_id.lang"/>
+            <t t-foreach="docs" t-as="o">
+                <!--<t t-raw="translate_doc(doc, 'account.analytic.line', 'partner_id.lang', 'helpdesk_rhea.report_helpdesk_activity_document')"/>-->
+                <!--<t t-call="helpdesk_rhea.report_helpdesk_activity_document" t-lang="o.partner_id.lang"/>-->
+                <t t-call="helpdesk_rhea.report_helpdesk_activity_document" t-lang="nl_BE"/>
             </t>
         </t>
     </template>
@@ -12,14 +14,11 @@
     <!-- Translatable template -->
     <template id="report_helpdesk_activity_document">
     <!--_document">-->
-    <t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})" />
+    <!--<t t-set="doc" t-value="o.with_context({'lang':o.partner_id.lang})"/>-->
+
             <div class="page">
                 <link rel='stylesheet' href='/web/static/lib/bootstrap/css/bootstrap.css'/>
                 <link rel='stylesheet' href='/web/static/lib/fontawesome/css/font-awesome.css'/>
-
-
-
-
 
 
                 <div class="pull-left">
