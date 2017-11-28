@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Main template -->
-    <!--<template id="report_helpdesk_activity">-->
-        <!--<t t-call="report.html_container">-->
-            <!--<t t-call="helpdesk_rhea.report_helpdesk_activity_document" t-lang="data['lang']"/>-->
-        <!--</t>-->
-    <!--</template>-->
+    <template id="report_helpdesk_activity">
+        <t t-call="report.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="helpdesk_rhea.report_helpdesk_activity_document" t-lang="doc.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
 
     <!-- Translatable template -->
-    <template id="report_helpdesk_activity">
+    <template id="report_helpdesk_activity_document">
     <!--_document">-->
-
+    <t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})" />
             <div class="page">
                 <link rel='stylesheet' href='/web/static/lib/bootstrap/css/bootstrap.css'/>
                 <link rel='stylesheet' href='/web/static/lib/fontawesome/css/font-awesome.css'/>

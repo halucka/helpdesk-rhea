@@ -47,12 +47,7 @@
         </record>
 
 
-        <record id="action_budget_debit_view_tree" model="ir.actions.act_window">
-            <field name="name">action_budget_debit_view_tree</field>
-            <field name="res_model">budget.debit</field>
-            <field name="view_mode">tree, form</field>
-            <field name="view_id" ref="budget_debit_view_tree"/>
-        </record>
+
 
         <record id="budget_debit_view_form" model="ir.ui.view">
             <field name="name">Helpdesk Budget Debits Form</field>
@@ -70,7 +65,7 @@
         <record id="budget_debit_view_tree" model="ir.ui.view">
             <field name="name">Helpdesk Budget Debits List</field>
             <field name="model">budget.debit</field>
-            <field name="priority" eval="12" />
+            <field name="priority" eval="6" />
             <field name="arch" type="xml">
                 <tree>
                       <field name="timesheet_ids"/>
@@ -79,6 +74,12 @@
             </field>
         </record>
 
+         <record id="action_budget_debit_view_tree" model="ir.actions.act_window">
+            <field name="name">action_budget_debit_view_tree</field>
+            <field name="res_model">budget.debit</field>
+            <field name="view_mode">tree, form</field>
+            <field name="view_id" ref="budget_debit_view_tree"/>
+        </record>
 
     </data>
 </odoo>
