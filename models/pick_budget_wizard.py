@@ -11,9 +11,11 @@ class PickBudgetWizard(models.TransientModel):
     _name = 'pick.budget.wizard'
     _description = _("Please select the dates for Timesheets:")
 
-    date_from = fields.Datetime(string='Date From')
-    date_until = fields.Datetime(string='Date Until')
+    #date_from = fields.Datetime(string='Date From')
+    #date_until = fields.Datetime(string='Date Until')
 
+    date_from = fields.Date(string='Date From')
+    date_until = fields.Date(string='Date Until')
 
     # action for a button
     @api.multi

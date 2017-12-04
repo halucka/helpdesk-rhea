@@ -42,7 +42,7 @@ class Project(models.Model):
         # run a wizard to select which project should new budget go to
 
         return {
-            'name': _('Select dates: '),
+            'name': _('Select dates: '), ####
             'view_type': 'form',
             'view_mode': 'form',
             'res_model': 'pick.budget.wizard',

@@ -14,7 +14,7 @@
     <!-- Translatable template -->
     <template id="report_helpdesk_activity_document">
     <!--_document">-->
-    <!--<t t-set="doc" t-value="o.with_context({'lang':o.partner_id.lang})"/>-->
+    <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})"/>
 
             <div class="page">
                 <link rel='stylesheet' href='/web/static/lib/bootstrap/css/bootstrap.css'/>
@@ -128,6 +128,11 @@
                         </t>
                     </tbody>
                 </table>
+
+                    <h4>Language should be: <t t-esc="o.partner_id.lang"/></h4>
+                    <h4>Tasks as: <t t-esc="o.label_tasks"/></h4>
+                    <h4>Country of the client: <t t-esc="o.partner_id.country_id.name"/></h4>
+
                 </div>
 
             </div>

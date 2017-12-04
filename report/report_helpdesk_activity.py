@@ -47,28 +47,34 @@ class report_helpdesk_activity(models.AbstractModel):
            budgetdebit_stats.append((key, budgetdebit_dict[key][0], budgetdebit_dict[key][1]))
         budgetdebit_stats.sort()
 
-        # TODO figure out a good way to determine the language of the report
-        if len(budgets)>0:
-            client = budgets[0].sale_order_id.partner_id
-        elif len(timesheets)>0:
-            client = timesheets[0].partner_id
-        else:
-            client = None
+        project = self.env['project.project'].search([('id', '=', data['project'])])
+        client = project.partner_id
+
 
         language = client.lang
+        print "project"
+        print project
+        print "client"
         print client
+        print "language"
         print language
-        print timesheets[0].partner_id.lang
-        # if not language:
-        #     language = user_id.lang
+
         if not language:
             language = 'en_US'
 
-        docargs = {'docs': self.env['account.analytic.line'].search([('project_id', '=', data['project'])]),
+        report_obj = self.env['report']
+        report = report_obj._get_report_from_name('helpdesk_rhea.report_helpdesk_activity')
+
+
+        docargs = {'docs': project,
+                   'doc_ids': docids,
+                    'doc_model': report.model,
+                    #'docs':self,
+
             'data': {'client': client,
                      'lang': language,
-                    'budgets': budgets,
-                    'timesheets': timesheets,
+                     'budgets': budgets,
+                     'timesheets': timesheets,
                      'budgetdebit_stats': budgetdebit_stats,
                      'total_budget_purchased': total_budget_purchased,
                      'total_budget_used': total_budget_used,
@@ -78,7 +84,7 @@ class report_helpdesk_activity(models.AbstractModel):
                      }
         }
 
-        return self.env['report'].render('helpdesk_rhea.report_helpdesk_activity', docargs)
-
+        #return self.env['report'].render('helpdesk_rhea.report_helpdesk_activity', docargs)
+        return report_obj.render('helpdesk_rhea.report_helpdesk_activity', docargs)
 
 
