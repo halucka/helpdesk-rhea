@@ -67,7 +67,7 @@
         </record>
 
         <!-- Wizard for generating Helpdesk Activities Report-->
-        <record id="budget_wizard_form_view" model="ir.ui.view">
+        <record id="report_wizard_form_view" model="ir.ui.view">
             <field name="name">wizard.form.report</field>
             <field name="model">report.wizard</field>
              <field name="type">form</field>
