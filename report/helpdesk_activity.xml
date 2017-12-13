@@ -4,7 +4,7 @@
     <!--<template id="report_helpdesk_activity">-->
         <!--<t t-call="report.html_container">-->
             <!--<t t-foreach="docs" t-as="o">-->
-                <!--&lt;!&ndash;<t t-raw="translate_doc(doc, 'account.analytic.line', 'partner_id.lang', 'helpdesk_rhea.report_helpdesk_activity_document')"/>&ndash;&gt;-->
+
                 <!--&lt;!&ndash;<t t-call="helpdesk_rhea.report_helpdesk_activity_document" t-lang="o.partner_id.lang"/>&ndash;&gt;-->
 
             <!--</t>-->
@@ -128,10 +128,6 @@
                         </t>
                     </tbody>
                 </table>
-
-                    <!--<h4>Language should be: <t t-esc="o.partner_id.lang"/></h4>-->
-                    <!--<h4>Tasks as: <t t-esc="o.label_tasks"/></h4>-->
-                    <!--<h4>Country of the client: <t t-esc="o.partner_id.country_id.name"/></h4>-->
 
                 </div>
 

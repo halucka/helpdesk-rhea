@@ -47,17 +47,10 @@ class report_helpdesk_activity(models.AbstractModel):
            budgetdebit_stats.append((key, budgetdebit_dict[key][0], budgetdebit_dict[key][1]))
         budgetdebit_stats.sort()
 
+        # determine the language
         project = self.env['project.project'].search([('id', '=', data['project'])])
         client = project.partner_id
-
-
         language = client.lang
-        print "project"
-        print project
-        print "client"
-        print client
-        print "language"
-        print language
 
         if not language:
             language = 'en_US'
@@ -69,7 +62,6 @@ class report_helpdesk_activity(models.AbstractModel):
         docargs = {'docs': project,
                    'doc_ids': docids,
                     'doc_model': report.model,
-                    #'docs':self,
 
             'data': {'client': client,
                      'lang': language,
@@ -87,11 +79,9 @@ class report_helpdesk_activity(models.AbstractModel):
         ctx = dict(self._context)
         ctx['translatable'] = True
         ctx['lang'] = language
-        print(20*"=")
-        print("\n".join("{}\t{}".format(k, v) for k, v in ctx.items()))
+
         report_obj = report_obj.with_context(ctx)
 
-        #return self.env['report'].render('helpdesk_rhea.report_helpdesk_activity', docargs)
         return report_obj.render('helpdesk_rhea.report_helpdesk_activity', docargs)
 
 
