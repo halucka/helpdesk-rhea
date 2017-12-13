@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Main template -->
-    <template id="report_helpdesk_activity">
-        <t t-call="report.html_container">
-            <t t-foreach="docs" t-as="o">
-                <!--<t t-raw="translate_doc(doc, 'account.analytic.line', 'partner_id.lang', 'helpdesk_rhea.report_helpdesk_activity_document')"/>-->
-                <!--<t t-call="helpdesk_rhea.report_helpdesk_activity_document" t-lang="o.partner_id.lang"/>-->
-                <t t-call="helpdesk_rhea.report_helpdesk_activity_document" t-lang="nl_BE"/>
-            </t>
-        </t>
-    </template>
+    <!--&lt;!&ndash; Main template &ndash;&gt;-->
+    <!--<template id="report_helpdesk_activity">-->
+        <!--<t t-call="report.html_container">-->
+            <!--<t t-foreach="docs" t-as="o">-->
+                <!--&lt;!&ndash;<t t-raw="translate_doc(doc, 'account.analytic.line', 'partner_id.lang', 'helpdesk_rhea.report_helpdesk_activity_document')"/>&ndash;&gt;-->
+                <!--&lt;!&ndash;<t t-call="helpdesk_rhea.report_helpdesk_activity_document" t-lang="o.partner_id.lang"/>&ndash;&gt;-->
+
+            <!--</t>-->
+        <!--</t>-->
+    <!--</template>-->
 
     <!-- Translatable template -->
-    <template id="report_helpdesk_activity_document">
+    <template id="report_helpdesk_activity">
     <!--_document">-->
-    <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})"/>
+    <!--<t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})"/>-->
 
             <div class="page">
                 <link rel='stylesheet' href='/web/static/lib/bootstrap/css/bootstrap.css'/>
@@ -129,9 +129,9 @@
                     </tbody>
                 </table>
 
-                    <h4>Language should be: <t t-esc="o.partner_id.lang"/></h4>
-                    <h4>Tasks as: <t t-esc="o.label_tasks"/></h4>
-                    <h4>Country of the client: <t t-esc="o.partner_id.country_id.name"/></h4>
+                    <!--<h4>Language should be: <t t-esc="o.partner_id.lang"/></h4>-->
+                    <!--<h4>Tasks as: <t t-esc="o.label_tasks"/></h4>-->
+                    <!--<h4>Country of the client: <t t-esc="o.partner_id.country_id.name"/></h4>-->
 
                 </div>
 

@@ -84,6 +84,13 @@ class report_helpdesk_activity(models.AbstractModel):
                      }
         }
 
+        ctx = dict(self._context)
+        ctx['translatable'] = True
+        ctx['lang'] = language
+        print(20*"=")
+        print("\n".join("{}\t{}".format(k, v) for k, v in ctx.items()))
+        report_obj = report_obj.with_context(ctx)
+
         #return self.env['report'].render('helpdesk_rhea.report_helpdesk_activity', docargs)
         return report_obj.render('helpdesk_rhea.report_helpdesk_activity', docargs)
 
