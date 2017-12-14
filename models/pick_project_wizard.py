@@ -4,7 +4,7 @@ from odoo import models, fields, api, _
 
 class PickProjectWizard(models.TransientModel):
     _name = 'pick.project.wizard'
-    _description = "Pick the helpdesk project"
+    _description = _("Pick the helpdesk project")
 
     project_selection = fields.Selection(selection='get_helpdesk_projects', string='Helpdesk Projects')
 

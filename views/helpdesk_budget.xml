@@ -22,10 +22,10 @@
                       <field name="sale_order_id"/>
                       <field name="sale_order_date"/>
                       <field name="project_id"/>
+                      <field name="budgetdebit_ids"/>
                       <field name="amount"/>
                       <field name="amount_remaining"/>
                   </group>
-
                 </form>
             </field>
         </record>
@@ -39,6 +39,7 @@
                     <field name="sale_order_id"/>
                     <field name="sale_order_date"/>
                     <field name="project_id"/>
+                    <field name="budgetdebit_ids"/>
                     <field name="amount"/>
                     <field name="amount_remaining"/>
                 </tree>
@@ -47,6 +48,38 @@
 
 
 
+
+        <record id="budget_debit_view_form" model="ir.ui.view">
+            <field name="name">Helpdesk Budget Debits Form</field>
+            <field name="model">budget.debit</field>
+            <field name="arch" type="xml">
+                <form>
+                  <group>
+                      <field name="timesheet_ids"/>
+                      <field name="amount"/>
+                  </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="budget_debit_view_tree" model="ir.ui.view">
+            <field name="name">Helpdesk Budget Debits List</field>
+            <field name="model">budget.debit</field>
+            <field name="priority" eval="6" />
+            <field name="arch" type="xml">
+                <tree>
+                      <field name="timesheet_ids"/>
+                      <field name="amount"/>
+                </tree>
+            </field>
+        </record>
+
+         <record id="action_budget_debit_view_tree" model="ir.actions.act_window">
+            <field name="name">action_budget_debit_view_tree</field>
+            <field name="res_model">budget.debit</field>
+            <field name="view_mode">tree, form</field>
+            <field name="view_id" ref="budget_debit_view_tree"/>
+        </record>
 
     </data>
 </odoo>

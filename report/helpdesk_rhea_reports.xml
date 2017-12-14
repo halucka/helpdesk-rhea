@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+        id="action_report_helpdesk_activity"
+        string="Helpdesk Activities"
+        model="project.project"
+        report_type="qweb-pdf"
+        name="helpdesk_rhea.report_helpdesk_activity"
+        file="helpdesk_rhea.report_helpdesk_activity"
+        menu="False"
+        />
+    </data>
+</odoo>
+

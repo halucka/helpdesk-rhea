@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'sale', 'project', 'helpdesk'],
+    'depends': ['base', 'sale', 'project', 'helpdesk', 'hr_timesheet', 'report'],
 
     # always loaded
     'data': [
@@ -28,6 +28,9 @@
         'views/views.xml',
         'views/helpdesk_budget.xml',
         'security/ir.model.access.csv',
+        'security/security.xml',
+        'report/helpdesk_rhea_reports.xml',
+        'report/helpdesk_activity.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

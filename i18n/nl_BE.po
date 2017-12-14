@@ -1,0 +1,392 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* helpdesk_rhea
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-11-21 10:39+0000\n"
+"PO-Revision-Date: 2017-11-21 10:39+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: helpdesk_rhea
+#: model:ir.ui.view,arch_db:helpdesk_rhea.report_helpdesk_activity
+msgid "# of tickets"
+msgstr "# Boekingen"
+
+#. module: helpdesk_rhea
+#: model:ir.ui.view,arch_db:helpdesk_rhea.report_helpdesk_activity
+msgid "Activities in the selected period"
+msgstr "Prestaties geselecteerde periode"
+
+#. module: helpdesk_rhea
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_budget_debit_amount
+#: model:ir.ui.view,arch_db:helpdesk_rhea.report_helpdesk_activity
+msgid "Amount"
+msgstr "Totaal bedrag"
+
+#. module: helpdesk_rhea
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_helpdesk_budget_amount_remaining
+#: model:ir.ui.view,arch_db:helpdesk_rhea.report_helpdesk_activity
+msgid "Amount Remaining"
+msgstr "Resterend budget"
+
+#. module: helpdesk_rhea
+#: model:ir.model,name:helpdesk_rhea.model_account_analytic_line
+msgid "Analytic Line"
+msgstr "Analytische boekhouding code"
+
+#. module: helpdesk_rhea
+#: model:ir.ui.view,arch_db:helpdesk_rhea.wizard_form_view
+msgid "Book budget"
+msgstr "Boek budget"
+
+#. module: helpdesk_rhea
+#: model:ir.ui.view,arch_db:helpdesk_rhea.view_sale_order_custom
+msgid "Book budget on project"
+msgstr "Boek budget op project"
+
+#. module: helpdesk_rhea
+#: model:ir.ui.view,arch_db:helpdesk_rhea.view_project_project_custom
+msgid "Book timesheet on budget"
+msgstr "Prestaties afboeken van budget"
+
+#. module: helpdesk_rhea
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_budget_debit_budget_id
+msgid "Budget"
+msgstr "Budget"
+
+#. module: helpdesk_rhea
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_account_analytic_line_budget_debit_ids
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_helpdesk_budget_budgetdebit_ids
+msgid "Budget Debits"
+msgstr "Budget debet"
+
+#. module: helpdesk_rhea
+#: model:ir.ui.view,arch_db:helpdesk_rhea.report_helpdesk_activity
+msgid "Budget Use Summary"
+msgstr "Budget verbruik"
+
+#. module: helpdesk_rhea
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_project_project_budget_ids
+msgid "Budget ids"
+msgstr "Budget ids"
+
+#. module: helpdesk_rhea
+#: model:ir.ui.view,arch_db:helpdesk_rhea.report_helpdesk_activity
+msgid "Budget purchased:"
+msgstr "Voorzien budget"
+
+#. module: helpdesk_rhea
+#: model:ir.ui.view,arch_db:helpdesk_rhea.report_helpdesk_activity
+msgid "Budget remaining:"
+msgstr "Resterend budget"
+
+#. module: helpdesk_rhea
+#: model:ir.ui.view,arch_db:helpdesk_rhea.report_helpdesk_activity
+msgid "Budget use"
+msgstr "Budget verbruik"
+
+#. module: helpdesk_rhea
+#: model:ir.ui.view,arch_db:helpdesk_rhea.report_helpdesk_activity
+msgid "Budget used:"
+msgstr "Budget verbruik:"
+
+#. module: helpdesk_rhea
+#: code:addons/helpdesk_rhea/models/helpdesk_project.py:22
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_project_project_budget_count
+#: model:ir.ui.menu,name:helpdesk_rhea.helpdesk_budget_menu
+#: model:ir.ui.view,arch_db:helpdesk_rhea.view_project_project_custom
+#, python-format
+msgid "Budgets"
+msgstr "Budgetten"
+
+#. module: helpdesk_rhea
+#: model:ir.ui.view,arch_db:helpdesk_rhea.budget_wizard_form_view
+#: model:ir.ui.view,arch_db:helpdesk_rhea.wizard_form_view
+msgid "Cancel"
+msgstr "Annuleren"
+
+#. module: helpdesk_rhea
+#: model:ir.ui.view,arch_db:helpdesk_rhea.wizard_form_view
+msgid "Choose project"
+msgstr "Kies project"
+
+#. module: helpdesk_rhea
+#: model:ir.ui.view,arch_db:helpdesk_rhea.budget_wizard_form_view
+msgid "Choose the relevant dates"
+msgstr "Kies datums"
+
+#. module: helpdesk_rhea
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_budget_debit_create_uid
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_helpdesk_budget_create_uid
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_pick_budget_wizard_create_uid
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_pick_project_wizard_create_uid
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_report_wizard_create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_budget_debit_create_date
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_helpdesk_budget_create_date
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_pick_budget_wizard_create_date
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_pick_project_wizard_create_date
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_report_wizard_create_date
+msgid "Created on"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.ui.view,arch_db:helpdesk_rhea.report_helpdesk_activity
+msgid "Date"
+msgstr "Datum"
+
+#. module: helpdesk_rhea
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_pick_budget_wizard_date_from
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_report_wizard_date_from
+msgid "Date From"
+msgstr "Datum vanaf"
+
+#. module: helpdesk_rhea
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_pick_budget_wizard_date_until
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_report_wizard_date_until
+msgid "Date Until"
+msgstr "Datum tot"
+
+#. module: helpdesk_rhea
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_budget_debit_display_name
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_helpdesk_budget_display_name
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_pick_budget_wizard_display_name
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_pick_project_wizard_display_name
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_report_helpdesk_rhea_report_helpdesk_activity_display_name
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_report_wizard_display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.ui.view,arch_db:helpdesk_rhea.report_helpdesk_activity
+msgid "Employee"
+msgstr "Medewerker"
+
+#. module: helpdesk_rhea
+#: model:ir.actions.report.xml,name:helpdesk_rhea.action_report_helpdesk_activity
+msgid "Helpdesk Activities"
+msgstr "Prestaties"
+
+#. module: helpdesk_rhea
+#: model:ir.ui.view,arch_db:helpdesk_rhea.report_helpdesk_activity
+msgid "Helpdesk Activities -"
+msgstr "Prestaties"
+
+#. module: helpdesk_rhea
+#: model:ir.actions.act_window,name:helpdesk_rhea.helpdesk_budget_action
+msgid "Helpdesk Budgets"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:res.groups,name:helpdesk_rhea.group_manager
+msgid "Helpdesk Manager"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_pick_project_wizard_project_selection
+msgid "Helpdesk Projects"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_project_project_ticketprice
+msgid "Helpdesk Ticket Price"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_project_project_tickettime
+msgid "Helpdesk Ticket Time Unit in Hours"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.ui.view,arch_db:helpdesk_rhea.report_helpdesk_activity
+msgid "Hours"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_budget_debit_id
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_helpdesk_budget_id
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_pick_budget_wizard_id
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_pick_project_wizard_id
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_report_helpdesk_rhea_report_helpdesk_activity_id
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_report_wizard_id
+msgid "ID"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_project_project_is_servicedesk
+msgid "Is a servicedesk"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_account_analytic_line_is_paid
+msgid "Is paid"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_budget_debit___last_update
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_helpdesk_budget___last_update
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_pick_budget_wizard___last_update
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_pick_project_wizard___last_update
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_report_helpdesk_rhea_report_helpdesk_activity___last_update
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_report_wizard___last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_budget_debit_write_uid
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_helpdesk_budget_write_uid
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_pick_budget_wizard_write_uid
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_pick_project_wizard_write_uid
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_report_wizard_write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_budget_debit_write_date
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_helpdesk_budget_write_date
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_pick_budget_wizard_write_date
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_pick_project_wizard_write_date
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_report_wizard_write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.ui.view,arch_db:helpdesk_rhea.view_project_project_custom
+msgid "Make a report"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.ui.view,arch_db:helpdesk_rhea.budget_wizard_form_view
+msgid "Make report"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.ui.view,arch_db:helpdesk_rhea.report_helpdesk_activity
+msgid "Month"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_helpdesk_budget_sale_order_date
+msgid "Order Date"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.ui.view,arch_db:helpdesk_rhea.report_helpdesk_activity
+msgid "Ordered budget"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: code:addons/helpdesk_rhea/models/sale_order.py:14
+#, python-format
+msgid "Pick Project Wizard"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: code:addons/helpdesk_rhea/models/pick_project_wizard.py:7
+#: model:ir.model,name:helpdesk_rhea.model_pick_project_wizard
+#, python-format
+msgid "Pick the helpdesk project"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.ui.view,arch_db:helpdesk_rhea.budget_wizard_form_view
+msgid "Please pick the dates:"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.ui.view,arch_db:helpdesk_rhea.wizard_form_view
+msgid "Please pick the project:"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: code:addons/helpdesk_rhea/models/pick_budget_wizard.py:12
+#: code:addons/helpdesk_rhea/models/report_wizard.py:7
+#: model:ir.model,name:helpdesk_rhea.model_pick_budget_wizard
+#: model:ir.model,name:helpdesk_rhea.model_report_wizard
+#, python-format
+msgid "Please select the dates for Timesheets:"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.model,name:helpdesk_rhea.model_project_project
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_budget_debit_project_id
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_helpdesk_budget_project_id
+#: model:ir.ui.view,arch_db:helpdesk_rhea.report_helpdesk_activity
+msgid "Project"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_helpdesk_budget_sale_order_id
+#: model:ir.ui.view,arch_db:helpdesk_rhea.report_helpdesk_activity
+msgid "Sale Order"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.model,name:helpdesk_rhea.model_sale_order
+msgid "Sales Order"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: code:addons/helpdesk_rhea/models/helpdesk_project.py:45
+#: code:addons/helpdesk_rhea/models/helpdesk_project.py:61
+#, python-format
+msgid "Select dates: "
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.ui.view,arch_db:helpdesk_rhea.report_helpdesk_activity
+msgid "Start date"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.model,name:helpdesk_rhea.model_helpdesk_ticket
+#: model:ir.ui.view,arch_db:helpdesk_rhea.report_helpdesk_activity
+msgid "Ticket"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_budget_debit_timesheet_ids
+msgid "Timesheets"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.model.fields,field_description:helpdesk_rhea.field_helpdesk_budget_amount
+msgid "Total Amount"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.actions.act_window,name:helpdesk_rhea.action_budget_debit_view_tree
+msgid "action_budget_debit_view_tree"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.model,name:helpdesk_rhea.model_budget_debit
+msgid "budget.debit"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.model,name:helpdesk_rhea.model_helpdesk_budget
+msgid "helpdesk.budget"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.model,name:helpdesk_rhea.model_report_helpdesk_rhea_helpdesk_report_pdf
+msgid "report.helpdesk_rhea.helpdesk_report_pdf"
+msgstr ""
+
+#. module: helpdesk_rhea
+#: model:ir.model,name:helpdesk_rhea.model_report_helpdesk_rhea_report_helpdesk_activity
+msgid "report.helpdesk_rhea.report_helpdesk_activity"
+msgstr ""
+

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--&lt;!&ndash; Main template &ndash;&gt;-->
+    <!--<template id="report_helpdesk_activity">-->
+        <!--<t t-call="report.html_container">-->
+            <!--<t t-foreach="docs" t-as="o">-->
+
+                <!--&lt;!&ndash;<t t-call="helpdesk_rhea.report_helpdesk_activity_document" t-lang="o.partner_id.lang"/>&ndash;&gt;-->
+
+            <!--</t>-->
+        <!--</t>-->
+    <!--</template>-->
+
+    <!-- Translatable template -->
+    <template id="report_helpdesk_activity">
+    <!--_document">-->
+    <!--<t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})"/>-->
+
+            <div class="page">
+                <link rel='stylesheet' href='/web/static/lib/bootstrap/css/bootstrap.css'/>
+                <link rel='stylesheet' href='/web/static/lib/fontawesome/css/font-awesome.css'/>
+
+
+                <div class="pull-left">
+                    <strong><h3>Helpdesk Activities - <t t-esc="data['date_from']"/> - <t t-esc="data['date_until']"/></h3></strong>
+                    <br></br>
+                    <!-- print address if the client had been identified, otherwise skip-->
+                    <t t-if="data['client']">
+                    <p><t t-esc="data['client'].name" /></p>
+                    <p><t t-esc="data['client'].street" /></p>
+                    <p><t t-esc="data['client'].zip" /> <t t-esc="data['client'].city" /></p>
+                    </t>
+                    <br></br>
+                    <br></br>
+                </div>
+
+                <div class="pull-right">
+                    <img t-att-src="'helpdesk_rhea/static/CompanyLogo.png'"/>
+                </div>
+
+
+
+                <div class="pull-left">
+                <h4><strong>Ordered budget</strong></h4>
+                <table class="table table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Sale Order</th>
+                            <th>Start date</th>
+                            <th>Amount</th>
+                            <th>Amount Remaining</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="data['budgets']" t-as="budget">
+                            <tr>
+                                <td><t t-if="budget.sale_order_id.name" t-esc="budget.sale_order_id.name"/></td>
+                                <td><t t-if="budget.sale_order_date" t-esc="time.strftime('%d-%m-%Y',time.strptime(budget.sale_order_date,'%Y-%m-%d %H:%M:%S'))"/></td>
+                                <td><t t-esc="budget.amount"/></td>
+                                <td><t t-esc="budget.amount_remaining"/></td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+
+                <br></br>
+
+                <h4><strong>Budget use</strong></h4>
+                <table class="table table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th># of tickets</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="data['budgetdebit_stats']" t-as="bd">
+                            <tr>
+                                <td><t t-esc="bd[0]"/></td>
+                                <td><t t-esc="bd[1]"/></td>
+                                <td><t t-esc="bd[2]"/></td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+
+                <br></br>
+
+                <h4><strong>Budget Use Summary</strong></h4>
+                <table class="table table-bordered table-condensed">
+                    <tbody>
+                        <tr>
+                            <td>Budget purchased:</td>
+                            <td><t t-esc="data['total_budget_purchased']"/></td>
+                        </tr>
+                        <tr>
+                            <td>Budget used:</td>
+                            <td><t t-esc="data['total_budget_used']"/></td>
+                        </tr>
+                        <tr>
+                            <td>Budget remaining:</td>
+                            <td><t t-esc="data['total_budget_remaining']"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br></br>
+                <h4><strong>Activities in the selected period <t t-esc="data['date_from']"/> - <t t-esc="data['date_until']"/></strong></h4>
+                <table class="table table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Employee</th>
+                            <th>Date</th>
+                            <th>Hours</th>
+                            <th>Ticket</th>
+                            <th>Project</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="data['timesheets']" t-as="timesheet">
+                            <tr>
+                                <td><t t-esc="timesheet.user_id.name"/></td>
+                                <td><t t-esc="time.strftime('%d-%m-%Y',time.strptime(timesheet.date,'%Y-%m-%d'))"/></td>
+                                <td><t t-esc="str(round(timesheet.unit_amount, 2))"/></td>
+                                <td><t t-esc="timesheet.name"/></td>
+                                <td><t t-esc="timesheet.project_id.name"/></td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+
+                </div>
+
+            </div>
+
+    </template>
+</odoo>
